@@ -1,0 +1,492 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teknoluvas - Landing Page Responsiva</title>
+    <link rel="stylesheet" href="style.css"> 
+    <script src="/script.js"></script>
+    <script type="importmap">
+    {
+     "imports": {
+       "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
+      }
+    }
+</script>
+</head>
+<body>
+    
+    <!-- ============================================= -->
+    <!--                    HEADER                     -->
+    <!-- ============================================= -->
+    <header>
+        <nav class="container">
+            <a href="#home" class="logo gradient-text">Teknoluvas</a>
+            
+            <div class="nav-menu-wrapper">
+                <!-- Links para Desktop -->
+                <div class="nav-links">
+                    <a href="#home">Início</a>
+                    <a href="#solucoes">Soluções</a>
+                    <a href="#ia">IA & Dados</a>
+                </div>
+
+                <div class="header-controls">
+                    <!-- Visão do Convidado -->
+                    <div id="guest-view">
+                        <button id="auth-button" class="btn btn-secondary">Entrar</button>
+                    </div>
+                    <!-- Visão do Usuário Logado (inicialmente oculta) -->
+                    <div id="user-view" style="display: none;">
+                        <span id="user-name"></span>
+                        <button id="logout-button" class="btn btn-secondary">Sair</button>
+                    </div>
+                    
+                    <!-- Botão do Carrinho -->
+                    <button id="cart-button" class="cart-toggle" aria-label="Abrir carrinho" aria-controls="cart-drawer">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span id="cart-badge" class="cart-badge">0</span>
+                    </button>
+
+                    <!-- Botão do Menu Mobile -->
+                    <button id="menu-button" class="menu-toggle" aria-label="Abrir menu" aria-controls="mobile-menu" aria-expanded="false">
+                        <svg id="menu-open-icon" class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                        <svg id="menu-close-icon" class="icon" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Menu Mobile -->
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="#home">Início</a>
+            <a href="#solucoes">Soluções</a>
+            <a href="#ia">IA & Dados</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- ============================================= -->
+        <!--                  HERO SECTION                 -->
+        <!-- ============================================= -->
+        <section id="home" class="hero-section section-padding">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Criando <span class="gradient-text">Experiências Digitais</span></h1>
+                        <p>Construímos aplicações web bonitas, responsivas e de alto desempenho que impulsionam o crescimento e encantam os usuários.</p>
+                        <a href="#solucoes" class="btn btn-primary">Explore Nossas Soluções</a>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" alt="Espaço de trabalho digital com dispositivos">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================= -->
+        <!--              FEATURE SECTION 1                -->
+        <!-- ============================================= -->
+        <section id="solucoes" class="feature-section section-padding">
+            <div class="container">
+                <h2 class="section-title text-center">Nossas <span class="highlight">Soluções</span></h2>
+                <div class="feature-content">
+                    <div class="feature-image">
+                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop" alt="Equipe colaborando em um escritório moderno">
+                    </div>
+                    <div class="feature-text">
+                        <h3>Soluções Corporativas Personalizadas</h3>
+                        <p>Desenvolvemos sistemas robustos e escaláveis que se integram perfeitamente aos fluxos de trabalho existentes da sua empresa. Nossas soluções corporativas otimizam processos, aumentam a produtividade e fornecem insights valiosos através de painéis de dados intuitivos.</p>
+                        <ul class="feature-list">
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Automação de Processos</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Integração de Sistemas</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Segurança Avançada</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Relatórios Customizados</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- PRODUTOS RELACIONADOS 1 -->
+                <div class="related-products related-products-bg-1">
+                    <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="CRM Personalizado">
+                            <div class="product-card-content"><h3>CRM Personalizado</h3><p>Centralize o relacionamento com clientes e otimize sua estratégia de vendas.</p><p class="price">R$ 4.999</p><button class="btn btn-primary add-to-cart-btn" data-product-id="1" data-product-name="CRM Personalizado" data-product-price="4999" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Sistema ERP Integrado">
+                            <div class="product-card-content"><h3>Sistema ERP Integrado</h3><p>Gestão completa de finanças, estoque e recursos humanos em um só lugar.</p><p class="price">R$ 8.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Sistema ERP Integrado" data-product-price="8500" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de BI">
+                            <div class="product-card-content"><h3>Plataforma de BI</h3><p>Transforme dados brutos em insights estratégicos com dashboards interativos.</p><p class="price">R$ 6.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Plataforma de BI" data-product-price="6200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="App de Colaboração">
+                            <div class="product-card-content"><h3>App de Colaboração</h3><p>Comunique e gerencie projetos com sua equipe de forma eficiente e segura.</p><p class="price">R$ 3.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="4" data-product-name="App de Colaboração" data-product-price="3000" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================= -->
+        <!--                 FEATURE SECTION 2             -->
+        <!-- ============================================= -->
+        <section id="ecommerce" class="feature-section alt-bg section-padding">
+            <div class="container">
+                <div class="feature-content reverse">
+                    <div class="feature-image">
+                        <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2070&auto=format&fit=crop" alt="Pessoa usando um aplicativo de e-commerce em um smartphone">
+                    </div>
+                    <div class="feature-text">
+                        <h3>Plataformas de E-commerce Vibrantes</h3>
+                        <p>Transformamos sua visão de varejo em uma loja online cativante e de alta conversão. Focamos em uma experiência de usuário impecável, desde a navegação intuitiva até um processo de checkout seguro e simplificado.</p>
+                        <ul class="feature-list">
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Checkout Otimizado</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Design 100% Responsivo</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Gestão de Inventário</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Marketing Integrado</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- PRODUTOS RELACIONADOS 2 -->
+                <div class="related-products related-products-bg-2">
+                    <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Loja Virtual Premium">
+                            <div class="product-card-content"><h3>Loja Virtual Premium</h3><p>Uma experiência de compra otimizada para impulsionar suas vendas online.</p><p class="price">R$ 5.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Loja Virtual Premium" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Marketplace Solution">
+                            <div class="product-card-content"><h3>Marketplace Solution</h3><p>Crie seu shopping virtual com múltiplos vendedores e fontes de receita.</p><p class="price">R$ 12.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Marketplace Solution" data-product-price="12000" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Sistema de PDV e Estoque">
+                            <div class="product-card-content"><h3>Sistema de PDV e Estoque</h3><p>Sincronize suas vendas físicas e online com um inventário unificado.</p><p class="price">R$ 4.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Sistema de PDV e Estoque" data-product-price="4800" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="App de Compras Mobile">
+                            <div class="product-card-content"><h3>App de Compras Mobile</h3><p>Leve sua loja para o bolso dos seus clientes com um aplicativo nativo.</p><p class="price">R$ 9.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="8" data-product-name="App de Compras Mobile" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ============================================= -->
+        <!--                 FEATURE SECTION 3             -->
+        <!-- ============================================= -->
+        <section id="web-apps" class="feature-section section-padding">
+            <div class="container">
+                <div class="feature-content">
+                    <div class="feature-image">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop" alt="Gráficos e painéis de dados em uma tela">
+                    </div>
+                    <div class="feature-text">
+                        <h3>Aplicações Web Interativas</h3>
+                        <p>Especializamo-nos na criação de Aplicações de Página Única (SPAs) que oferecem uma experiência de usuário fluida e semelhante à de um aplicativo de desktop. Usando as tecnologias mais recentes, construímos painéis de controle e plataformas sociais que são rápidas e ricas em recursos.</p>
+                        <ul class="feature-list">
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Interfaces Reativas</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Performance Elevada</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Atualizações em Tempo Real</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>APIs Robustas</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- PRODUTOS RELACIONADOS 3 -->
+                <div class="related-products related-products-bg-3">
+                    <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Plataforma SaaS">
+                            <div class="product-card-content"><h3>Plataforma SaaS</h3><p>Lance seu software como serviço com nosso framework escalável e seguro.</p><p class="price">R$ 7.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Plataforma SaaS" data-product-price="7900" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Interativo">
+                            <div class="product-card-content"><h3>Dashboard Interativo</h3><p>Uma ferramenta poderosa para visualização de dados em tempo real.</p><p class="price">R$ 3.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Dashboard Interativo" data-product-price="3500" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Portal do Cliente">
+                            <div class="product-card-content"><h3>Portal do Cliente</h3><p>Ofereça autoatendimento e suporte 24/7 para seus clientes.</p><p class="price">R$ 4.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Portal do Cliente" data-product-price="4000" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Rede Social Corporativa">
+                            <div class="product-card-content"><h3>Rede Social Corporativa</h3><p>Conecte seus colaboradores e fortaleça a cultura da sua empresa.</p><p class="price">R$ 5.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Rede Social Corporativa" data-product-price="5800" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ============================================= -->
+        <!--                 FEATURE SECTION 4             -->
+        <!-- ============================================= -->
+        <section id="ia" class="feature-section alt-bg section-padding">
+            <div class="container">
+                <div class="feature-content reverse">
+                    <div class="feature-image">
+                        <img src="https://images.unsplash.com/photo-1620712943543-2858200f745a?q=80&w=2069&auto=format&fit=crop" alt="Visualização abstrata de dados e inteligência artificial">
+                    </div>
+                    <div class="feature-text">
+                        <h3>Inteligência de Dados e IA</h3>
+                        <p>Desbloqueie o potencial dos seus dados. Criamos soluções de inteligência artificial que transformam informações em vantagem competitiva, com modelos de machine learning para prever tendências, automatizar tarefas e personalizar a experiência do seu cliente.</p>
+                        <ul class="feature-list">
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Análise Preditiva</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Dashboards Inteligentes</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Modelos de Machine Learning</span></li>
+                           <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Automação com IA</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- PRODUTOS RELACIONADOS 4 -->
+                <div class="related-products related-products-bg-4">
+                    <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
+                    <div class="products-grid">
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Motor de Recomendação">
+                            <div class="product-card-content"><h3>Motor de Recomendação</h3><p>Personalize a experiência do usuário com sugestões de produtos inteligentes.</p><p class="price">R$ 7.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="13" data-product-name="Motor de Recomendação" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Análise de Sentimento">
+                            <div class="product-card-content"><h3>Análise de Sentimento</h3><p>Entenda a opinião dos seus clientes em tempo real a partir de redes sociais e reviews.</p><p class="price">R$ 6.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="14" data-product-name="Análise de Sentimento" data-product-price="6000" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Previsão de Demanda">
+                            <div class="product-card-content"><h3>Previsão de Demanda</h3><p>Otimize seu estoque e logística com previsões de vendas baseadas em IA.</p><p class="price">R$ 8.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="15" data-product-name="Previsão de Demanda" data-product-price="8200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Chatbot Cognitivo">
+                            <div class="product-card-content"><h3>Chatbot Cognitivo</h3><p>Automatize o atendimento ao cliente com um assistente virtual que aprende e evolui.</p><p class="price">R$ 5.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="16" data-product-name="Chatbot Cognitivo" data-product-price="5900" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================= -->
+        <!--                CAROUSEL SECTION               -->
+        <!-- ============================================= -->
+        <section id="showcase" class="carousel-section">
+            <div class="container">
+                <h2 class="section-title text-center">Veja Nossas Soluções em <span class="highlight">Ação</span></h2>
+            </div>
+            <div class="carousel-container">
+                <div class="carousel-slides">
+                    <!-- Slide 1 -->
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard de Business Intelligence">
+                        <div class="carousel-slide-caption">
+                            <h3>Dashboards Interativos para Tomada de Decisão</h3>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de E-commerce em um tablet">
+                        <div class="carousel-slide-caption">
+                            <h3>Plataformas de E-commerce que Convertem</h3>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" alt="Sistema de CRM em um laptop">
+                        <div class="carousel-slide-caption">
+                            <h3>Sistemas Corporativos que Otimizam Processos</h3>
+                        </div>
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop" alt="Chatbot de IA conversando com um usuário">
+                        <div class="carousel-slide-caption">
+                            <h3>Inteligência Artificial para Atendimento ao Cliente</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-button prev" aria-label="Slide anterior">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button class="carousel-button next" aria-label="Próximo slide">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <!-- ============================================= -->
+    <!--          DRAWER OVERLAY (SHARED)              -->
+    <!-- ============================================= -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+
+    <!-- ============================================= -->
+    <!--                 CART DRAWER                   -->
+    <!-- ============================================= -->
+    <aside id="cart-drawer" class="drawer" aria-labelledby="cart-heading">
+        <div class="drawer-header">
+            <h3 id="cart-heading">Meu Carrinho</h3>
+            <button id="cart-close-button" class="drawer-close-button" aria-label="Fechar carrinho">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <ul id="cart-items" class="cart-items">
+                <!-- Itens do carrinho serão inseridos aqui via JS -->
+            </ul>
+            <div id="cart-empty-message" class="cart-empty-message" style="display: none;">
+                <p>Seu carrinho está vazio.</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cart-total-price">R$ 0,00</span>
+            </div>
+            <button class="btn btn-primary cart-checkout-button">Finalizar Compra</button>
+        </div>
+    </aside>
+
+    <!-- ============================================= -->
+    <!--                PROFILE DRAWER                 -->
+    <!-- ============================================= -->
+    <aside id="profile-drawer" class="drawer" aria-labelledby="profile-heading">
+        <div class="drawer-header">
+            <h3 id="profile-heading">Meu Perfil</h3>
+            <button id="profile-close-button" class="drawer-close-button" aria-label="Fechar perfil">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="drawer-body">
+            <!-- Seção de Dados do Usuário -->
+            <div class="profile-section">
+                <h4>Meus Dados</h4>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Nome</label>
+                        <input type="text" id="profile-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" name="email" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </form>
+            </div>
+            <!-- Seção de Histórico de Pedidos -->
+            <div class="profile-section">
+                <h4>Histórico de Pedidos</h4>
+                 <ul id="order-history-list" class="order-history-list">
+                    <!-- Histórico de pedidos será inserido aqui -->
+                </ul>
+                <div id="order-empty-message" class="profile-empty-message" style="display: none;">
+                    <p>Você ainda não fez nenhum pedido.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+
+    <!-- ============================================= -->
+    <!--          AUTH MODAL & OVERLAY                 -->
+    <!-- ============================================= -->
+    <div id="auth-modal-overlay" class="auth-modal-overlay"></div>
+    <div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="auth-modal-header">
+            <div class="auth-modal-tabs">
+                <button class="auth-tab active" data-tab-target="#login-form">Entrar</button>
+                <button class="auth-tab" data-tab-target="#register-form">Cadastrar-se</button>
+            </div>
+            <button id="auth-modal-close" class="auth-modal-close" aria-label="Fechar modal">
+                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="auth-modal-body">
+            <!-- Formulário de Login -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Senha</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Entrar</button>
+            </form>
+            <!-- Formulário de Cadastro -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-name">Nome</label>
+                    <input type="text" id="register-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Criar Conta</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ============================================= -->
+    <!--                     FOOTER                    -->
+    <!-- ============================================= -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Coluna 1: Sobre -->
+                <div class="footer-column">
+                    <a href="#home" class="logo gradient-text">Teknoluvas</a>
+                    <p>Criando experiências digitais inovadoras para impulsionar o seu negócio.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram"><svg class="icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126s1.338.935 2.126 1.384c.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.717 2.126-1.384s.935-1.338 1.384-2.126c.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.148-.558-2.913-.306-.789-.717-1.459-1.384-2.126S20.65.935 21.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.056 1.17-.249 1.805-.413 2.227-.217.562-.477.96-.896 1.382-.42.419-.82.679-1.38.896-.423.164-1.057.36-2.227.413-1.266.057-1.646.07-4.85.07s-3.585-.015-4.85-.074c-1.17-.056-1.805-.249-2.227-.413-.562-.217-.96-.477-1.382-.896-.419-.42-.679-.82-1.381-.896-.164-.423-.36-1.057-.413-2.227-.057-1.266-.07-1.646-.07-4.85s.015-3.585.074-4.85c.056-1.17.249-1.805.413-2.227.217-.562.477.96.896-1.382.42-.419.819-.679.896-1.381.423-.164 1.057.36 2.227-.413C8.415 2.176 8.797 2.16 12 2.16zm0 5.48c-2.336 0-4.238 1.902-4.238 4.238s1.902 4.238 4.238 4.238 4.238-1.902 4.238-4.238S14.336 7.64 12 7.64zm0 6.69c-1.365 0-2.468-1.103-2.468-2.468s1.103-2.468 2.468-2.468 2.468 1.103 2.468 2.468-1.103 2.468-2.468 2.468zm4.852-6.52c-.732 0-1.325.593-1.325 1.325s.593 1.325 1.325 1.325 1.325-.593 1.325-1.325-.593-1.325-1.325-1.325z"/></svg></a>
+                        <a href="#" aria-label="Facebook"><svg class="icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M22.675 0h-21.35C.582 0 0 .582 0 1.325v21.351C0 23.418.582 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.742 0 1.325-.582 1.325-1.325V1.325C24 .582 23.418 0 22.675 0z"/></svg></a>
+                        <a href="#" aria-label="WhatsApp"><svg class="icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>WhatsApp</title><path d="M12.061 0C5.425 0 0 5.373 0 12.001c0 2.101.543 4.103 1.58 5.894L.025 24l6.238-1.652a11.956 11.956 0 0 0 5.798 1.502h.002c6.637 0 12.001-5.373 12.001-12.001C24.063 5.373 18.698 0 12.061 0zm0 21.819c-1.895 0-3.695-.53-5.228-1.488l-.376-.223-3.878 1.028 1.045-3.784-.244-.395a9.883 9.883 0 0 1-1.58-5.155c0-5.463 4.465-9.894 9.961-9.894 5.496 0 9.961 4.43 9.961 9.894s-4.465 9.894-9.961 9.894zm5.224-6.878c-.282-.142-1.662-.82-1.92-.914-.258-.094-.446-.142-.633.142-.188.283-.726.914-.89 1.1-.164.185-.328.209-.61.067-.282-.142-1.192-.44-2.27-1.399- .839-.745-1.405-1.662-1.57-1.944-.164-.283-.018-.433.125-.575.129-.129.283-.328.425-.492.143-.164.188-.283.282-.47.094-.188.047-.352-.023-.493-.07-.143-.633-1.523-.868-2.086-.226-.544-.453-.469-.633-.478-.17-.01-.357-.01-.544-.01-.188 0-.493.07-.749.352-.259.283-1.003.98-1.003 2.383s1.026 2.768 1.17 2.953c.142.188 2.015 3.078 4.887 4.314 2.873 1.236 2.873.824 3.397.796.524-.027 1.662-.679 1.897-1.336.236-.656.236-1.218.164-1.336-.072-.12-.259-.186-.541-.328z"/></svg></a>
+                    </div>
+                </div>
+                <!-- Coluna 2: Soluções -->
+                <div class="footer-column">
+                    <h4>Soluções</h4>
+                    <ul class="footer-links">
+                        <li><a href="#solucoes">Corporativas</a></li>
+                        <li><a href="#ecommerce">E-commerce</a></li>
+                        <li><a href="#web-apps">Aplicações Web</a></li>
+                        <li><a href="#ia">IA & Dados</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna 3: Contato Rápido -->
+                <div class="footer-column">
+                    <h4>Contato Rápido</h4>
+                     <ul class="footer-links">
+                        <li><a href="mailto:contato@teknoluvas.com">contato@teknoluvas.com</a></li>
+                        <li><a href="tel:+5511999998888">+55 (11) 99999-8888</a></li>
+                    </ul>
+                </div>
+                <!-- Coluna 4: Newsletter -->
+                <div class="footer-column">
+                    <h4>Fique por Dentro</h4>
+                    <p>Inscreva-se para receber novidades sobre tecnologia e nossas soluções.</p>
+                    <form class="newsletter-form">
+                        <label for="newsletter-email" class="sr-only">Seu e-mail</label>
+                        <input type="email" id="newsletter-email" placeholder="Seu e-mail">
+                        <button type="submit">Inscrever</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Teknoluvas. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>
