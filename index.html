@@ -15,6 +15,7 @@
             --color-text-secondary: #4b5563; /* cinza médio */
             --color-background-light: #f3f4f6; /* cinza claro */
             --color-white: #ffffff;
+            --color-error: #dc2626; /* vermelho escuro para erros */
             --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
 
@@ -97,12 +98,18 @@
             font-size: 0.875rem;
         }
         
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
         .btn-primary {
             background-color: var(--color-primary);
             color: var(--color-white);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background-color: var(--color-primary-dark);
             transform: scale(1.05);
         }
@@ -113,11 +120,24 @@
             border: 2px solid var(--color-primary);
         }
         
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background-color: var(--color-primary);
             color: var(--color-white);
         }
         
+        /* Animação de Rolagem */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .sr-only {
             position: absolute;
             width: 1px;
@@ -200,16 +220,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
-        
-        #user-view {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        #user-name {
-            font-weight: 600;
-            color: var(--color-text-secondary);
         }
 
         .cart-toggle, .menu-toggle {
@@ -297,7 +307,7 @@
         /* Estilos do Hero */
         .hero-section {
             background-color: var(--color-white);
-            min-height: 100vh;
+            min-height: calc(100vh - 80px); /* Adjust based on header height */
             display: flex;
             align-items: center;
         }
@@ -337,6 +347,59 @@
 
         .hero-image img:hover {
              transform: scale(1.05);
+        }
+
+        /* Keyframes for the scroll animation */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Logo Carousel Section */
+        .logo-carousel-section {
+            background-color: var(--color-white);
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .logo-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
+        }
+
+        .logo-carousel-track {
+            display: flex;
+            width: calc(200px * 14); /* (logo-slide width) * (number of logos * 2) */
+            animation: scroll 35s linear infinite;
+        }
+
+        .logo-carousel:hover .logo-carousel-track {
+            animation-play-state: paused;
+        }
+
+        .logo-slide {
+            flex-shrink: 0;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo-slide img {
+            max-width: 120px;
+            height: auto;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .logo-slide:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
         }
 
         /* Estilos das Seções de Features (Sobre, FeatureOne, FeatureTwo) */
@@ -567,8 +630,8 @@
             background-color: var(--color-white);
         }
         
-        /* Estilos do Carrinho de Compras */
-        .cart-overlay {
+        /* Estilos do Drawer (Orçamento) */
+        .drawer-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -581,12 +644,12 @@
             transition: opacity 0.3s ease, visibility 0.3s;
         }
         
-        .cart-overlay.active {
+        .drawer-overlay.active {
             opacity: 1;
             visibility: visible;
         }
 
-        .cart-drawer {
+        .drawer {
             position: fixed;
             top: 0;
             right: 0;
@@ -602,11 +665,11 @@
             flex-direction: column;
         }
 
-        .cart-drawer.active {
+        .drawer.active {
             transform: translateX(0);
         }
 
-        .cart-header {
+        .drawer-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -614,30 +677,31 @@
             border-bottom: 1px solid #e5e7eb;
         }
         
-        .cart-header h3 {
+        .drawer-header h3 {
             font-size: 1.25rem;
             font-weight: 700;
         }
 
-        .cart-close-button {
+        .drawer-close-button {
             background: none;
             border: none;
             cursor: pointer;
             padding: 0.25rem;
         }
         
-        .cart-close-button .icon {
+        .drawer-close-button .icon {
             width: 1.5rem;
             height: 1.5rem;
             color: var(--color-text-secondary);
         }
         
-        .cart-body {
+        .drawer-body {
             flex-grow: 1;
             overflow-y: auto;
             padding: 1.5rem;
         }
-        
+
+        /* Estilos do Orçamento */
         .cart-empty-message {
             text-align: center;
             color: var(--color-text-secondary);
@@ -709,130 +773,26 @@
             padding: 1.5rem;
             border-top: 1px solid #e5e7eb;
         }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
         
-        .cart-checkout-button {
+        .budget-observations textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
             font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            margin-top: 1rem;
         }
 
-        /* Estilos do Modal de Autenticação */
-        .auth-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-
-        .auth-modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .auth-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            background-color: var(--color-white);
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 420px;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-        
-        .auth-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .auth-modal-header {
-            position: relative;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .auth-modal-close {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-
-        .auth-modal-close:hover {
-             background-color: #f3f4f6;
-        }
-
-        .auth-modal-close .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--color-text-secondary);
-        }
-
-        .auth-modal-tabs {
-            display: flex;
-        }
-        
-        .auth-tab {
-            flex: 1;
-            padding: 1rem;
-            font-weight: 600;
-            text-align: center;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-            transition: color 0.2s, border-color 0.2s;
-            color: var(--color-text-secondary);
-        }
-
-        .auth-tab:hover {
-            color: var(--color-text-primary);
-        }
-
-        .auth-tab.active {
-            color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
-        }
-
-        .auth-modal-body {
-            padding: 2rem 1.5rem;
-        }
-        
-        .auth-form {
-            display: none;
-        }
-        
-        .auth-form.active {
-            display: block;
+        #guest-info-form .form-group {
+            margin-bottom: 0.75rem;
         }
         
         .form-group {
             margin-bottom: 1.25rem;
+            position: relative;
         }
 
         .form-group label {
@@ -857,11 +817,32 @@
             box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
         }
 
-        .auth-form .btn {
+        .form-group input.invalid {
+            border-color: var(--color-error);
+            box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+        }
+
+        .form-error-message {
+            color: var(--color-error);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            min-height: 1.2em; /* Reserve space to prevent layout shift */
+        }
+
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-checkout-button {
             width: 100%;
-            padding: 0.875rem;
+            padding: 1rem;
             font-size: 1rem;
-            margin-top: 0.5rem;
         }
 
         /* Estilos do Footer */
@@ -999,6 +980,202 @@
             color: #9ca3af;
             margin: 0;
         }
+        
+        /* ============================================= */
+        /*                 CHAT WIDGET                   */
+        /* ============================================= */
+        .chat-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .chat-fab:hover {
+            background-color: var(--color-primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .chat-fab .icon {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .chat-widget-container {
+            position: fixed;
+            bottom: 7rem;
+            right: 2rem;
+            width: 90vw;
+            max-width: 400px;
+            height: 70vh;
+            max-height: 600px;
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+        
+        .chat-widget-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible;
+        }
+        
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            flex-shrink: 0;
+        }
+        
+        .chat-header h3 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .chat-close-btn {
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 1.75rem;
+            font-weight: 300;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+        
+        .chat-log {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .chat-message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        
+        .chat-message strong {
+            color: var(--color-primary);
+        }
+
+        .chat-message.ai {
+            background-color: #e5e7eb;
+            color: var(--color-text-primary);
+            border-bottom-left-radius: 0.25rem;
+            align-self: flex-start;
+        }
+        
+        .chat-message.user {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-bottom-right-radius: 0.25rem;
+            align-self: flex-end;
+        }
+        
+        .chat-message.typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chat-message.typing-indicator .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #9ca3af;
+            border-radius: 50%;
+            animation: typing-blink 1.4s infinite both;
+        }
+        
+        .chat-message.typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+        .chat-message.typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing-blink {
+            0% { opacity: 0.2; }
+            20% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+        
+        .chat-input-area {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+            gap: 0.5rem;
+        }
+        
+        #chat-input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        #chat-input:focus {
+             border-color: var(--color-primary);
+             box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+        }
+        
+        #chat-send-btn {
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+            border: none;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        
+        #chat-send-btn:hover:not(:disabled) {
+            background-color: var(--color-primary-dark);
+        }
+        
+        #chat-send-btn .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        
+        #chat-send-btn:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
 
 
         /* Media Queries para Responsividade */
@@ -1058,6 +1235,18 @@
             }
         }
         
+        @media (max-width: 480px) {
+             .chat-widget-container {
+                bottom: 1rem;
+                right: 1rem;
+                width: calc(100vw - 2rem);
+             }
+             .chat-fab {
+                 bottom: 1rem;
+                 right: 1rem;
+             }
+        }
+
         @media (min-width: 1024px) {
             /* Produtos */
             .products-grid {
@@ -1097,18 +1286,8 @@
                 </div>
 
                 <div class="header-controls">
-                    <!-- Visão do Convidado -->
-                    <div id="guest-view">
-                        <button id="auth-button" class="btn btn-secondary">Entrar</button>
-                    </div>
-                    <!-- Visão do Usuário Logado (inicialmente oculta) -->
-                    <div id="user-view" style="display: none;">
-                        <span id="user-name"></span>
-                        <button id="logout-button" class="btn btn-secondary">Sair</button>
-                    </div>
-                    
-                    <!-- Botão do Carrinho -->
-                    <button id="cart-button" class="cart-toggle" aria-label="Abrir carrinho" aria-controls="cart-drawer">
+                    <!-- Botão do Orçamento -->
+                    <button id="cart-button" class="cart-toggle" aria-label="Abrir orçamento" aria-controls="cart-drawer">
                         <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                         <span id="cart-badge" class="cart-badge">0</span>
                     </button>
@@ -1136,12 +1315,12 @@
         <section id="home" class="hero-section section-padding">
             <div class="container">
                 <div class="hero-content">
-                    <div class="hero-text">
+                    <div class="hero-text scroll-animate">
                         <h1>Criando <span class="gradient-text">Experiências Digitais</span></h1>
                         <p>Construímos aplicações web bonitas, responsivas e de alto desempenho que impulsionam o crescimento e encantam os usuários.</p>
                         <a href="#solucoes" class="btn btn-primary">Explore Nossas Soluções</a>
                     </div>
-                    <div class="hero-image">
+                    <div class="hero-image scroll-animate">
                         <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" alt="Espaço de trabalho digital com dispositivos">
                     </div>
                 </div>
@@ -1149,12 +1328,43 @@
         </section>
 
         <!-- ============================================= -->
+        <!--                  LOGO CAROUSEL                -->
+        <!-- ============================================= -->
+        <section class="logo-carousel-section">
+            <div class="container">
+                <h3 class="text-center scroll-animate" style="color: var(--color-text-secondary); font-weight: 500; margin-bottom: 2rem;">Tecnologias e parceiros que confiam em nosso trabalho</h3>
+                <div class="logo-carousel scroll-animate">
+                    <div class="logo-carousel-track">
+                        <!-- Logos (Set 1) -->
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React" alt="Logo da React"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js" alt="Logo da Node.js"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS" alt="Logo da AWS"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js" alt="Logo da Next.js"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma" alt="Logo da Figma"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe" alt="Logo da Stripe"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel" alt="Logo da Vercel"></div>
+                        
+                        <!-- Logos (Set 2 for infinite loop) -->
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React" alt="Logo da React"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js" alt="Logo da Node.js"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS" alt="Logo da AWS"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js" alt="Logo da Next.js"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma" alt="Logo da Figma"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe" alt="Logo da Stripe"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel" alt="Logo da Vercel"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ============================================= -->
         <!--              FEATURE SECTION 1                -->
         <!-- ============================================= -->
         <section id="solucoes" class="feature-section section-padding">
             <div class="container">
-                <h2 class="section-title text-center">Nossas <span class="highlight">Soluções</span></h2>
-                <div class="feature-content">
+                <h2 class="section-title text-center scroll-animate">Nossas <span class="highlight">Soluções</span></h2>
+                <div class="feature-content scroll-animate">
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop" alt="Equipe colaborando em um escritório moderno">
                     </div>
@@ -1171,24 +1381,44 @@
                 </div>
                 
                 <!-- PRODUTOS RELACIONADOS 1 -->
-                <div class="related-products related-products-bg-1">
+                <div class="related-products related-products-bg-1 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
-                        <div class="product-card">
-                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="CRM Personalizado">
-                            <div class="product-card-content"><h3>CRM Personalizado</h3><p>Centralize o relacionamento com clientes e otimize sua estratégia de vendas.</p><p class="price">R$ 4.999</p><button class="btn btn-primary add-to-cart-btn" data-product-id="1" data-product-name="CRM Personalizado" data-product-price="4999" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        <div class="product-card scroll-animate">
+                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="Intranet Corporativa Inteligente">
+                            <div class="product-card-content">
+                                <h3>Intranet Corporativa Inteligente</h3>
+                                <p>Conecte sua equipe, centralize documentos e automatize comunicados com um portal seguro.</p>
+                                <p class="price">R$ 7.500</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Intranet Corporativa Inteligente" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
                         </div>
-                        <div class="product-card">
-                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Sistema ERP Integrado">
-                            <div class="product-card-content"><h3>Sistema ERP Integrado</h3><p>Gestão completa de finanças, estoque e recursos humanos em um só lugar.</p><p class="price">R$ 8.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Sistema ERP Integrado" data-product-price="8500" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        <div class="product-card scroll-animate">
+                            <img src="https://images.unsplash.com/photo-1587825140708-df8769a5b8de?q=80&w=2070&auto=format&fit=crop" alt="Sistema de Gestão (ERP) na Nuvem">
+                            <div class="product-card-content">
+                                <h3>Sistema de Gestão (ERP) na Nuvem</h3>
+                                <p>Unifique finanças, estoque e operações com um ERP flexível e acessível de qualquer lugar.</p>
+                                <p class="price">R$ 9.800</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Sistema de Gestão (ERP) na Nuvem" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1587825140708-df8769a5b8de?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
                         </div>
-                        <div class="product-card">
-                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de BI">
-                            <div class="product-card-content"><h3>Plataforma de BI</h3><p>Transforme dados brutos em insights estratégicos com dashboards interativos.</p><p class="price">R$ 6.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Plataforma de BI" data-product-price="6200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        <div class="product-card scroll-animate">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de Business Intelligence (BI)">
+                            <div class="product-card-content">
+                                <h3>Plataforma de Business Intelligence (BI)</h3>
+                                <p>Transforme dados em dashboards interativos para decisões estratégicas mais rápidas.</p>
+                                <p class="price">R$ 6.200</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Plataforma de BI" data-product-price="6200" data-product-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
                         </div>
-                        <div class="product-card">
-                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="App de Colaboração">
-                            <div class="product-card-content"><h3>App de Colaboração</h3><p>Comunique e gerencie projetos com sua equipe de forma eficiente e segura.</p><p class="price">R$ 3.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="4" data-product-name="App de Colaboração" data-product-price="3000" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                        <div class="product-card scroll-animate">
+                            <img src="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop" alt="Automação de Processos (RPA)">
+                            <div class="product-card-content">
+                                <h3>Automação de Processos (RPA)</h3>
+                                <p>Elimine tarefas repetitivas com robôs de software que otimizam fluxos de trabalho.</p>
+                                <p class="price">R$ 5.500</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Automação de Processos (RPA)" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1200,7 +1430,7 @@
         <!-- ============================================= -->
         <section id="ecommerce" class="feature-section alt-bg section-padding">
             <div class="container">
-                <div class="feature-content reverse">
+                <div class="feature-content reverse scroll-animate">
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2070&auto=format&fit=crop" alt="Pessoa usando um aplicativo de e-commerce em um smartphone">
                     </div>
@@ -1216,24 +1446,24 @@
                     </div>
                 </div>
                 <!-- PRODUTOS RELACIONADOS 2 -->
-                <div class="related-products related-products-bg-2">
+                <div class="related-products related-products-bg-2 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Loja Virtual Premium">
-                            <div class="product-card-content"><h3>Loja Virtual Premium</h3><p>Uma experiência de compra otimizada para impulsionar suas vendas online.</p><p class="price">R$ 5.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Loja Virtual Premium" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Loja Virtual Premium</h3><p>Uma experiência de compra otimizada para impulsionar suas vendas online.</p><p class="price">R$ 5.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Loja Virtual Premium" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Marketplace Solution">
-                            <div class="product-card-content"><h3>Marketplace Solution</h3><p>Crie seu shopping virtual com múltiplos vendedores e fontes de receita.</p><p class="price">R$ 12.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Marketplace Solution" data-product-price="12000" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Marketplace Solution</h3><p>Crie seu shopping virtual com múltiplos vendedores e fontes de receita.</p><p class="price">R$ 12.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Marketplace Solution" data-product-price="12000" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Sistema de PDV e Estoque">
-                            <div class="product-card-content"><h3>Sistema de PDV e Estoque</h3><p>Sincronize suas vendas físicas e online com um inventário unificado.</p><p class="price">R$ 4.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Sistema de PDV e Estoque" data-product-price="4800" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Sistema de PDV e Estoque</h3><p>Sincronize suas vendas físicas e online com um inventário unificado.</p><p class="price">R$ 4.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Sistema de PDV e Estoque" data-product-price="4800" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="App de Compras Mobile">
-                            <div class="product-card-content"><h3>App de Compras Mobile</h3><p>Leve sua loja para o bolso dos seus clientes com um aplicativo nativo.</p><p class="price">R$ 9.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="8" data-product-name="App de Compras Mobile" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>App de Compras Mobile</h3><p>Leve sua loja para o bolso dos seus clientes com um aplicativo nativo.</p><p class="price">R$ 9.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="8" data-product-name="App de Compras Mobile" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
                     </div>
                 </div>
@@ -1245,7 +1475,7 @@
         <!-- ============================================= -->
         <section id="web-apps" class="feature-section section-padding">
             <div class="container">
-                <div class="feature-content">
+                <div class="feature-content scroll-animate">
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop" alt="Gráficos e painéis de dados em uma tela">
                     </div>
@@ -1261,24 +1491,24 @@
                     </div>
                 </div>
                 <!-- PRODUTOS RELACIONADOS 3 -->
-                <div class="related-products related-products-bg-3">
+                <div class="related-products related-products-bg-3 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Plataforma SaaS">
-                            <div class="product-card-content"><h3>Plataforma SaaS</h3><p>Lance seu software como serviço com nosso framework escalável e seguro.</p><p class="price">R$ 7.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Plataforma SaaS" data-product-price="7900" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Plataforma SaaS</h3><p>Lance seu software como serviço com nosso framework escalável e seguro.</p><p class="price">R$ 7.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Plataforma SaaS" data-product-price="7900" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Interativo">
-                            <div class="product-card-content"><h3>Dashboard Interativo</h3><p>Uma ferramenta poderosa para visualização de dados em tempo real.</p><p class="price">R$ 3.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Dashboard Interativo" data-product-price="3500" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Dashboard Interativo</h3><p>Uma ferramenta poderosa para visualização de dados em tempo real.</p><p class="price">R$ 3.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Dashboard Interativo" data-product-price="3500" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Portal do Cliente">
-                            <div class="product-card-content"><h3>Portal do Cliente</h3><p>Ofereça autoatendimento e suporte 24/7 para seus clientes.</p><p class="price">R$ 4.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Portal do Cliente" data-product-price="4000" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Portal do Cliente</h3><p>Ofereça autoatendimento e suporte 24/7 para seus clientes.</p><p class="price">R$ 4.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Portal do Cliente" data-product-price="4000" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Rede Social Corporativa">
-                            <div class="product-card-content"><h3>Rede Social Corporativa</h3><p>Conecte seus colaboradores e fortaleça a cultura da sua empresa.</p><p class="price">R$ 5.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Rede Social Corporativa" data-product-price="5800" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Rede Social Corporativa</h3><p>Conecte seus colaboradores e fortaleça a cultura da sua empresa.</p><p class="price">R$ 5.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Rede Social Corporativa" data-product-price="5800" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
                     </div>
                 </div>
@@ -1290,7 +1520,7 @@
         <!-- ============================================= -->
         <section id="ia" class="feature-section alt-bg section-padding">
             <div class="container">
-                <div class="feature-content reverse">
+                <div class="feature-content reverse scroll-animate">
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1620712943543-2858200f745a?q=80&w=2069&auto=format&fit=crop" alt="Visualização abstrata de dados e inteligência artificial">
                     </div>
@@ -1306,24 +1536,24 @@
                     </div>
                 </div>
                 <!-- PRODUTOS RELACIONADOS 4 -->
-                <div class="related-products related-products-bg-4">
+                <div class="related-products related-products-bg-4 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Motor de Recomendação">
-                            <div class="product-card-content"><h3>Motor de Recomendação</h3><p>Personalize a experiência do usuário com sugestões de produtos inteligentes.</p><p class="price">R$ 7.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="13" data-product-name="Motor de Recomendação" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Motor de Recomendação</h3><p>Personalize a experiência do usuário com sugestões de produtos inteligentes.</p><p class="price">R$ 7.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="13" data-product-name="Motor de Recomendação" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Análise de Sentimento">
-                            <div class="product-card-content"><h3>Análise de Sentimento</h3><p>Entenda a opinião dos seus clientes em tempo real a partir de redes sociais e reviews.</p><p class="price">R$ 6.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="14" data-product-name="Análise de Sentimento" data-product-price="6000" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Análise de Sentimento</h3><p>Entenda a opinião dos seus clientes em tempo real a partir de redes sociais e reviews.</p><p class="price">R$ 6.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="14" data-product-name="Análise de Sentimento" data-product-price="6000" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Previsão de Demanda">
-                            <div class="product-card-content"><h3>Previsão de Demanda</h3><p>Otimize seu estoque e logística com previsões de vendas baseadas em IA.</p><p class="price">R$ 8.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="15" data-product-name="Previsão de Demanda" data-product-price="8200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Previsão de Demanda</h3><p>Otimize seu estoque e logística com previsões de vendas baseadas em IA.</p><p class="price">R$ 8.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="15" data-product-name="Previsão de Demanda" data-product-price="8200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
-                        <div class="product-card">
+                        <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Chatbot Cognitivo">
-                            <div class="product-card-content"><h3>Chatbot Cognitivo</h3><p>Automatize o atendimento ao cliente com um assistente virtual que aprende e evolui.</p><p class="price">R$ 5.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="16" data-product-name="Chatbot Cognitivo" data-product-price="5900" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Carrinho</button></div>
+                            <div class="product-card-content"><h3>Chatbot Cognitivo</h3><p>Automatize o atendimento ao cliente com um assistente virtual que aprende e evolui.</p><p class="price">R$ 5.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="16" data-product-name="Chatbot Cognitivo" data-product-price="5900" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
                     </div>
                 </div>
@@ -1335,9 +1565,9 @@
         <!-- ============================================= -->
         <section id="showcase" class="carousel-section">
             <div class="container">
-                <h2 class="section-title text-center">Veja Nossas Soluções em <span class="highlight">Ação</span></h2>
+                <h2 class="section-title text-center scroll-animate">Veja Nossas Soluções em <span class="highlight">Ação</span></h2>
             </div>
-            <div class="carousel-container">
+            <div class="carousel-container scroll-animate">
                 <div class="carousel-slides">
                     <!-- Slide 1 -->
                     <div class="carousel-slide">
@@ -1383,79 +1613,58 @@
     </main>
     
     <!-- ============================================= -->
-    <!--              CART DRAWER & OVERLAY            -->
+    <!--          DRAWER OVERLAY (SHARED)              -->
     <!-- ============================================= -->
-    <div id="cart-overlay" class="cart-overlay"></div>
-    <aside id="cart-drawer" class="cart-drawer" aria-labelledby="cart-heading">
-        <div class="cart-header">
-            <h3 id="cart-heading">Meu Carrinho</h3>
-            <button id="cart-close-button" class="cart-close-button" aria-label="Fechar carrinho">
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+
+    <!-- ============================================= -->
+    <!--                 BUDGET DRAWER                 -->
+    <!-- ============================================= -->
+    <aside id="cart-drawer" class="drawer" aria-labelledby="cart-heading">
+        <div class="drawer-header">
+            <h3 id="cart-heading">Meu Orçamento</h3>
+            <button id="cart-close-button" class="drawer-close-button" aria-label="Fechar orçamento">
                 <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-        <div class="cart-body">
+        <div class="drawer-body">
             <ul id="cart-items" class="cart-items">
-                <!-- Itens do carrinho serão inseridos aqui via JS -->
+                <!-- Itens do orçamento serão inseridos aqui via JS -->
             </ul>
+             <div class="budget-observations">
+                <label for="budget-observations-textarea" style="font-weight: 600; font-size: 0.875rem; margin-bottom: 0.5rem; display: block;">Observações:</label>
+                <textarea id="budget-observations-textarea" placeholder="Ex: Preciso de customizações, etc."></textarea>
+            </div>
             <div id="cart-empty-message" class="cart-empty-message" style="display: none;">
-                <p>Seu carrinho está vazio.</p>
+                <p>Seu orçamento está vazio.</p>
             </div>
         </div>
         <div class="cart-footer">
+            <div id="guest-info-form">
+                <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Preencha seus dados para enviar o orçamento.</p>
+                <div class="form-group">
+                    <label for="guest-name">Nome</label>
+                    <input type="text" id="guest-name" name="guest-name" required>
+                    <div id="guest-name-error" class="form-error-message"></div>
+                </div>
+                 <div class="form-group">
+                    <label for="guest-email">Email</label>
+                    <input type="email" id="guest-email" name="guest-email" required>
+                    <div id="guest-email-error" class="form-error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="guest-phone">Telefone (com DDD)</label>
+                    <input type="tel" id="guest-phone" name="guest-phone" required>
+                     <div id="guest-phone-error" class="form-error-message"></div>
+                </div>
+            </div>
             <div class="cart-total">
                 <span>Total</span>
                 <span id="cart-total-price">R$ 0,00</span>
             </div>
-            <button class="btn btn-primary cart-checkout-button">Finalizar Compra</button>
+            <button class="btn btn-primary cart-checkout-button">Enviar Orçamento via WhatsApp</button>
         </div>
     </aside>
-
-    <!-- ============================================= -->
-    <!--          AUTH MODAL & OVERLAY                 -->
-    <!-- ============================================= -->
-    <div id="auth-modal-overlay" class="auth-modal-overlay"></div>
-    <div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-        <div class="auth-modal-header">
-            <div class="auth-modal-tabs">
-                <button class="auth-tab active" data-tab-target="#login-form">Entrar</button>
-                <button class="auth-tab" data-tab-target="#register-form">Cadastrar-se</button>
-            </div>
-            <button id="auth-modal-close" class="auth-modal-close" aria-label="Fechar modal">
-                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-        <div class="auth-modal-body">
-            <!-- Formulário de Login -->
-            <form id="login-form" class="auth-form active">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Senha</label>
-                    <input type="password" id="login-password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Entrar</button>
-            </form>
-            <!-- Formulário de Cadastro -->
-            <form id="register-form" class="auth-form">
-                <div class="form-group">
-                    <label for="register-name">Nome</label>
-                    <input type="text" id="register-name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Senha</label>
-                    <input type="password" id="register-password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Criar Conta</button>
-            </form>
-        </div>
-    </div>
-
 
     <!-- ============================================= -->
     <!--                     FOOTER                    -->
@@ -1508,10 +1717,34 @@
         </div>
     </footer>
     
-    <script type="module">
-        // Wait for the DOM to be fully loaded before running scripts
-        document.addEventListener('DOMContentLoaded', () => {
+    <!-- ============================================= -->
+    <!--                  CHAT WIDGET                  -->
+    <!-- ============================================= -->
+    <button id="chat-fab" class="chat-fab" aria-label="Abrir chat com assistente IA">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+    </button>
+    <div id="chat-widget-container" class="chat-widget-container">
+        <div class="chat-header">
+            <h3>Assistente IA</h3>
+            <button id="chat-close-btn" class="chat-close-btn" aria-label="Fechar chat">&times;</button>
+        </div>
+        <div id="chat-log" class="chat-log">
+            <!-- As mensagens do chat serão inseridas aqui -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Pergunte sobre nossas soluções...">
+            <button id="chat-send-btn" aria-label="Enviar mensagem">
+                 <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+            </button>
+        </div>
+    </div>
 
+
+    <script type="module">
+        import { GoogleGenAI } from "@google/genai";
+    
+        document.addEventListener('DOMContentLoaded', () => {
+            
             // --- Mobile Menu Logic ---
             const menuButton = document.getElementById('menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -1527,8 +1760,7 @@
                     menuButton.setAttribute('aria-expanded', String(isActive));
                 });
 
-                const navLinks = mobileMenu.querySelectorAll('a');
-                navLinks.forEach(link => {
+                mobileMenu.querySelectorAll('a').forEach(link => {
                     link.addEventListener('click', () => {
                         mobileMenu.classList.remove('active');
                         openIcon.style.display = 'block';
@@ -1546,13 +1778,11 @@
                 const prevButton = carousel.querySelector('.carousel-button.prev');
                 const nextButton = carousel.querySelector('.carousel-button.next');
                 const dotsContainer = carousel.querySelector('.carousel-dots');
-
                 let currentIndex = 0;
                 const slideCount = slides.length;
                 let autoplayInterval = null;
 
-                // Create dots
-                if (dotsContainer) {
+                if (dotsContainer && slideCount > 0) {
                     slides.forEach((_, i) => {
                         const dot = document.createElement('button');
                         dot.classList.add('carousel-dot');
@@ -1564,95 +1794,76 @@
                             resetAutoplay();
                         });
                     });
-                    const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
-
-                    const goToSlide = (index) => {
-                        currentIndex = (index + slideCount) % slideCount;
-                        if (slidesContainer) {
-                            slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-                        }
-
-                        dots.forEach((dot, i) => {
-                            dot.classList.toggle('active', i === currentIndex);
-                        });
-                    };
-
-                    const nextSlide = () => goToSlide(currentIndex + 1);
-                    const prevSlide = () => goToSlide(currentIndex - 1);
-
-                    const startAutoplay = () => {
-                        if (autoplayInterval) clearInterval(autoplayInterval);
-                        autoplayInterval = window.setInterval(nextSlide, 5000);
-                    };
-
-                    const stopAutoplay = () => {
-                        if (autoplayInterval) clearInterval(autoplayInterval);
-                    };
-                    
-                    const resetAutoplay = () => {
-                        stopAutoplay();
-                        startAutoplay();
-                    };
-
-                    if (nextButton) {
-                        nextButton.addEventListener('click', () => {
-                            nextSlide();
-                            resetAutoplay();
-                        });
-                    }
-
-                    if (prevButton) {
-                        prevButton.addEventListener('click', () => {
-                            prevSlide();
-                            resetAutoplay();
-                        });
-                    }
-                    
-                    carousel.addEventListener('mouseenter', stopAutoplay);
-                    carousel.addEventListener('mouseleave', startAutoplay);
-
-                    // Initialize
-                    startAutoplay();
                 }
+                
+                const dots = dotsContainer ? Array.from(dotsContainer.querySelectorAll('.carousel-dot')) : [];
+
+                const goToSlide = (index) => {
+                    currentIndex = (index + slideCount) % slideCount;
+                    slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+                    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+                };
+
+                const nextSlide = () => goToSlide(currentIndex + 1);
+                const startAutoplay = () => {
+                    if (autoplayInterval) clearInterval(autoplayInterval);
+                    autoplayInterval = setInterval(nextSlide, 5000);
+                };
+                const stopAutoplay = () => clearInterval(autoplayInterval);
+                const resetAutoplay = () => {
+                    stopAutoplay();
+                    startAutoplay();
+                };
+
+                nextButton?.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
+                prevButton?.addEventListener('click', () => { goToSlide(currentIndex - 1); resetAutoplay(); });
+                carousel.addEventListener('mouseenter', stopAutoplay);
+                carousel.addEventListener('mouseleave', startAutoplay);
+                startAutoplay();
             }
 
-            // --- Shopping Cart Logic ---
-            const cartButton = document.getElementById('cart-button');
+            // --- Shared Drawer Logic ---
+            const drawerOverlay = document.getElementById('drawer-overlay');
             const cartDrawer = document.getElementById('cart-drawer');
-            const cartOverlay = document.getElementById('cart-overlay');
+
+            if(drawerOverlay) {
+                drawerOverlay.addEventListener('click', () => {
+                    if (cartDrawer.classList.contains('active')) toggleCart();
+                });
+            }
+
+            // --- Budget (Shopping Cart) Logic ---
+            const cartButton = document.getElementById('cart-button');
             const cartCloseButton = document.getElementById('cart-close-button');
             const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
             const cartItemsContainer = document.getElementById('cart-items');
             const cartTotalPriceEl = document.getElementById('cart-total-price');
             const cartBadge = document.getElementById('cart-badge');
             const cartEmptyMessage = document.getElementById('cart-empty-message');
-            
-            let cart = [];
+            const checkoutButton = document.querySelector('.cart-checkout-button');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            const formatCurrency = (value) => {
-                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            
+            const saveCart = () => {
+                localStorage.setItem('cart', JSON.stringify(cart));
             };
 
             const toggleCart = () => {
                 cartDrawer.classList.toggle('active');
-                cartOverlay.classList.toggle('active');
+                drawerOverlay.classList.toggle('active');
                 document.body.style.overflow = cartDrawer.classList.contains('active') ? 'hidden' : '';
             };
 
             const renderCart = () => {
                 cartItemsContainer.innerHTML = '';
-
-                if (cart.length === 0) {
-                    cartEmptyMessage.style.display = 'block';
-                } else {
-                    cartEmptyMessage.style.display = 'none';
+                cartEmptyMessage.style.display = cart.length === 0 ? 'block' : 'none';
+                
+                if (cart.length > 0) {
                     cart.forEach(item => {
                         const li = document.createElement('li');
                         li.classList.add('cart-item');
                         li.dataset.productId = item.id;
-
-                        const subtotal = item.price * item.quantity;
-
                         li.innerHTML = `
                             <img src="${item.image}" alt="${item.name}" class="cart-item-image">
                             <div class="cart-item-details">
@@ -1664,15 +1875,13 @@
                                     <button class="quantity-btn increase-quantity-btn" aria-label="Aumentar quantidade">+</button>
                                 </div>
                             </div>
-                            <div class="cart-item-subtotal">
-                                ${formatCurrency(subtotal)}
-                            </div>
-                        `;
+                            <div class="cart-item-subtotal">${formatCurrency(item.price * item.quantity)}</div>`;
                         cartItemsContainer.appendChild(li);
                     });
                 }
                 updateCartTotal();
                 updateCartBadge();
+                saveCart();
             };
             
             const updateCartTotal = () => {
@@ -1683,184 +1892,284 @@
             const updateCartBadge = () => {
                 const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
                 cartBadge.textContent = String(totalItems);
-                if (totalItems > 0) {
-                    cartBadge.classList.add('visible');
-                } else {
-                    cartBadge.classList.remove('visible');
-                }
+                cartBadge.classList.toggle('visible', totalItems > 0);
             };
 
-            const handleAddToCart = (e) => {
-                const button = e.currentTarget;
-                const productId = button.dataset.productId;
-                const productName = button.dataset.productName;
-                const productPrice = parseFloat(button.dataset.productPrice || '0');
-                const productImage = button.dataset.productImage;
-                
-                if (!productId || !productName || !productPrice || !productImage) return;
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const clickedButton = e.currentTarget;
+                    const { productId, productName, productPrice, productImage } = clickedButton.dataset;
+                    
+                    if (!productId || !productName || !productPrice || !productImage) return;
 
-                const existingItem = cart.find(item => item.id === productId);
-                if (existingItem) {
-                    existingItem.quantity++;
-                } else {
-                    cart.push({
-                        id: productId,
-                        name: productName,
-                        price: productPrice,
-                        image: productImage,
-                        quantity: 1
-                    });
-                }
-                renderCart();
-                
-                if (!cartDrawer.classList.contains('active')) {
-                    toggleCart();
-                }
-            };
+                    // Prevent multiple clicks while animation is running
+                    if (clickedButton.disabled) return;
+
+                    const originalContent = clickedButton.innerHTML;
+                    clickedButton.disabled = true;
+                    
+                    // Visual feedback
+                    clickedButton.innerHTML = `
+                        <span style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; line-height: 1;">
+                            Adicionado
+                            <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </span>`;
+
+                    // Add to cart logic
+                    const existingItem = cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        existingItem.quantity++;
+                    } else {
+                        cart.push({ id: productId, name: productName, price: parseFloat(productPrice), image: productImage, quantity: 1 });
+                    }
+                    
+                    // Render cart and open drawer
+                    renderCart();
+                    if (!cartDrawer.classList.contains('active')) {
+                        toggleCart();
+                    }
+
+                    // Revert button state after a delay
+                    setTimeout(() => {
+                        clickedButton.innerHTML = originalContent;
+                        clickedButton.disabled = false;
+                    }, 1500);
+                });
+            });
             
-            const handleQuantityChange = (e) => {
-                const target = e.target;
-                const cartItemElement = target.closest('.cart-item');
+            cartItemsContainer?.addEventListener('click', (e) => {
+                const cartItemElement = e.target.closest('.cart-item');
                 if (!cartItemElement) return;
 
                 const productId = cartItemElement.dataset.productId;
                 const itemInCart = cart.find(item => item.id === productId);
                 if (!itemInCart) return;
 
-                if (target.classList.contains('increase-quantity-btn')) {
+                if (e.target.classList.contains('increase-quantity-btn')) {
                     itemInCart.quantity++;
-                } else if (target.classList.contains('decrease-quantity-btn')) {
+                } else if (e.target.classList.contains('decrease-quantity-btn')) {
                     itemInCart.quantity--;
                 }
                 
-                if (itemInCart.quantity <= 0) {
-                    cart = cart.filter(item => item.id !== productId);
-                }
+                if (itemInCart.quantity <= 0) cart = cart.filter(item => item.id !== productId);
                 
                 renderCart();
-            };
-
-            if (cartButton && cartDrawer && cartOverlay && cartCloseButton) {
-                cartButton.addEventListener('click', toggleCart);
-                cartOverlay.addEventListener('click', toggleCart);
-                cartCloseButton.addEventListener('click', toggleCart);
-            }
-            
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', handleAddToCart);
             });
-            
-            if (cartItemsContainer) {
-                cartItemsContainer.addEventListener('click', handleQuantityChange);
-            }
 
-            // Initial render
-            renderCart();
-            
-            // --- Auth Modal & State Logic ---
-            const authButton = document.getElementById('auth-button');
-            const authModal = document.getElementById('auth-modal');
-            const authOverlay = document.getElementById('auth-modal-overlay');
-            const authCloseButton = document.getElementById('auth-modal-close');
-            const authTabs = document.querySelectorAll('.auth-tab');
-            const authForms = document.querySelectorAll('.auth-form');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
+            cartButton?.addEventListener('click', toggleCart);
+            cartCloseButton?.addEventListener('click', toggleCart);
+            renderCart(); // Initial render
 
-            const guestView = document.getElementById('guest-view');
-            const userView = document.getElementById('user-view');
-            const userNameEl = document.getElementById('user-name');
-            const logoutButton = document.getElementById('logout-button');
-
-            const openAuthModal = () => {
-                if (authModal && authOverlay) {
-                    authModal.classList.add('active');
-                    authOverlay.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
+            // --- Form Validation Logic ---
+            const setError = (inputElement, message) => {
+                const formGroup = inputElement.parentElement;
+                const errorDisplay = formGroup.querySelector('.form-error-message');
+                inputElement.classList.add('invalid');
+                if (errorDisplay) errorDisplay.innerText = message;
             };
 
-            const closeAuthModal = () => {
-                if (authModal && authOverlay) {
-                    authModal.classList.remove('active');
-                    authOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
+            const clearError = (inputElement) => {
+                const formGroup = inputElement.parentElement;
+                const errorDisplay = formGroup.querySelector('.form-error-message');
+                inputElement.classList.remove('invalid');
+                if (errorDisplay) errorDisplay.innerText = '';
             };
             
-            const loginUser = (name) => {
-                if(guestView && userView && userNameEl) {
-                    guestView.style.display = 'none';
-                    userView.style.display = 'flex';
-                    userNameEl.textContent = `Olá, ${name}`;
-                    closeAuthModal();
-                }
-            };
+            const clearGuestErrors = () => {
+                clearError(document.getElementById('guest-name'));
+                clearError(document.getElementById('guest-email'));
+                clearError(document.getElementById('guest-phone'));
+            }
             
-            const logoutUser = () => {
-                 if(guestView && userView) {
-                    guestView.style.display = 'block';
-                    userView.style.display = 'none';
-                    userNameEl.textContent = '';
-                }
-            };
-
-            if (authButton) {
-                authButton.addEventListener('click', openAuthModal);
-            }
-            if (authCloseButton) {
-                authCloseButton.addEventListener('click', closeAuthModal);
-            }
-            if (authOverlay) {
-                authOverlay.addEventListener('click', closeAuthModal);
-            }
-            if (logoutButton) {
-                logoutButton.addEventListener('click', logoutUser);
-            }
-
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && authModal && authModal.classList.contains('active')) {
-                    closeAuthModal();
+                if (e.key === 'Escape') {
+                    if (cartDrawer.classList.contains('active')) toggleCart();
                 }
             });
 
-            authTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const targetSelector = tab.dataset.tabTarget;
-                    if (!targetSelector) return;
+            checkoutButton?.addEventListener('click', async () => {
+                if (cart.length === 0) {
+                    alert('Seu orçamento está vazio!');
+                    return;
+                }
+                clearGuestErrors();
 
-                    const target = document.querySelector(targetSelector);
+                const whatsappNumber = "551436643083";
+                
+                const guestNameInput = document.getElementById('guest-name');
+                const guestEmailInput = document.getElementById('guest-email');
+                const guestPhoneInput = document.getElementById('guest-phone');
+                
+                const userName = guestNameInput.value.trim();
+                const userEmail = guestEmailInput.value.trim();
+                const userPhone = guestPhoneInput.value.trim();
+                
+                let isGuestValid = true;
+                if(!userName) {
+                    setError(guestNameInput, 'O nome é obrigatório.');
+                    isGuestValid = false;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if(!userEmail || !emailRegex.test(userEmail)) {
+                    setError(guestEmailInput, 'Por favor, insira um e-mail válido.');
+                    isGuestValid = false;
+                }
+                if(!userPhone || userPhone.length < 10) {
+                    setError(guestPhoneInput, 'Telefone inválido (inclua o DDD).');
+                    isGuestValid = false;
+                }
 
-                    authTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
+                if (!isGuestValid) return;
+                
+                const productsList = cart.map(item => `- ${item.name} (Qtd: ${item.quantity})`).join('\n');
+                const observations = document.getElementById('budget-observations-textarea').value.trim();
+                const totalValue = cartTotalPriceEl.textContent;
 
-                    authForms.forEach(form => form.classList.remove('active'));
-                    if (target) {
-                        target.classList.add('active');
-                    }
+                let message = `Olá! Gostaria de um orçamento para os seguintes itens:\n\n*Produtos:*\n${productsList}\n\n*Total estimado:* ${totalValue}\n\n`;
+
+                if(observations) {
+                    message += `*Observações:*\n${observations}\n\n`;
+                }
+
+                message += `*Meus Dados:*\n- Nome: ${userName}\n- Email: ${userEmail}\n- Telefone: ${userPhone}\n\nAguardando o contato. Obrigado!`;
+                
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+                
+                // Limpa o orçamento após o envio
+                cart = [];
+                renderCart();
+                toggleCart();
+            });
+
+            // --- Lógica da Animação de Rolagem ---
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+            if (animatedElements.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px -50px 0px' // Aciona um pouco antes de estar totalmente visível
                 });
+
+                animatedElements.forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            // --- Lógica do Chat Widget IA ---
+            const chatFab = document.getElementById('chat-fab');
+            const chatWidget = document.getElementById('chat-widget-container');
+            const chatCloseBtn = document.getElementById('chat-close-btn');
+            const chatLog = document.getElementById('chat-log');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            let geminiChat = null;
+
+            const toggleChatWidget = () => {
+                chatWidget.classList.toggle('active');
+            };
+
+            const formatAIResponse = (text) => {
+                const escapedText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const boldedText = escapedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                const withLineBreaks = boldedText.replace(/\n/g, '<br>');
+                return withLineBreaks;
+            }
+
+            const addMessageToLog = (sender, message, isTyping = false) => {
+                const messageEl = document.createElement('div');
+                messageEl.classList.add('chat-message', sender);
+                
+                if (isTyping) {
+                    messageEl.classList.add('typing-indicator');
+                    messageEl.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
+                } else {
+                    messageEl.innerHTML = formatAIResponse(message);
+                }
+                
+                chatLog.appendChild(messageEl);
+                chatLog.scrollTop = chatLog.scrollHeight;
+                return messageEl;
+            };
+
+            const initializeChat = () => {
+                try {
+                    const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+
+                    const products = [];
+                    document.querySelectorAll('.product-card').forEach(card => {
+                        const name = card.querySelector('h3')?.innerText;
+                        const description = card.querySelector('p')?.innerText;
+                        const price = card.querySelector('.price')?.innerText;
+                        if (name && description && price) {
+                            products.push({ name, description, price });
+                        }
+                    });
+                    const productListString = products.map(p => `- ${p.name}: ${p.description} (${p.price})`).join('\n');
+                    
+                    const systemInstruction = `
+                        Você é um consultor especialista da 'Teknoluvas', uma empresa de soluções digitais. Seu objetivo é analisar a necessidade de um cliente e recomendar os produtos mais adequados do nosso portfólio. Seja amigável, profissional e conversacional. Mantenha as respostas concisas.
+
+                        Use esta lista como sua base de conhecimento de produtos:
+                        ${productListString}
+
+                        Responda às perguntas do cliente com base nesses produtos. Se a pergunta não for sobre os produtos, gentilmente redirecione a conversa para as soluções que a Teknoluvas oferece. Use negrito (**) para destacar os nomes dos produtos.
+                    `;
+
+                    geminiChat = ai.chats.create({
+                        model: 'gemini-2.5-flash',
+                        config: { systemInstruction },
+                    });
+                    
+                    addMessageToLog('ai', "Olá! Sou o assistente da Teknoluvas. Como posso ajudar a encontrar a solução ideal para o seu negócio?");
+
+                } catch (error) {
+                    console.error("Erro ao inicializar o chat:", error);
+                     addMessageToLog('ai', "Desculpe, estou com problemas para me conectar. Tente novamente mais tarde.");
+                }
+            };
+            
+            const handleSendMessage = async () => {
+                const userInput = chatInput.value.trim();
+                if (!userInput || !geminiChat) return;
+
+                addMessageToLog('user', userInput);
+                chatInput.value = '';
+                chatSendBtn.disabled = true;
+
+                const typingIndicator = addMessageToLog('ai', '', true);
+
+                try {
+                    const response = await geminiChat.sendMessage({ message: userInput });
+                    typingIndicator.remove();
+                    addMessageToLog('ai', response.text);
+                } catch (error) {
+                    console.error("Erro na API Gemini:", error);
+                    typingIndicator.remove();
+                    addMessageToLog('ai', "Desculpe, ocorreu um erro. Pode tentar reformular sua pergunta?");
+                } finally {
+                    chatSendBtn.disabled = false;
+                    chatInput.focus();
+                }
+            };
+
+            chatFab?.addEventListener('click', toggleChatWidget);
+            chatCloseBtn?.addEventListener('click', toggleChatWidget);
+            chatSendBtn?.addEventListener('click', handleSendMessage);
+            chatInput?.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSendMessage();
+                }
             });
             
-            if (loginForm) {
-                loginForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const emailInput = document.getElementById('login-email');
-                    if (emailInput && emailInput.value) {
-                         const name = emailInput.value.split('@')[0];
-                         loginUser(name);
-                    }
-                });
-            }
-            
-            if (registerForm) {
-                registerForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const nameInput = document.getElementById('register-name');
-                    if (nameInput && nameInput.value) {
-                        loginUser(nameInput.value);
-                    }
-                });
-            }
+            // Inicia o chat quando a página é carregada
+            initializeChat();
         });
     </script>
 </body>
