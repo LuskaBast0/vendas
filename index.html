@@ -4,1270 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Teknoluvas - Landing Page Responsiva</title>
-    <style>
-        /* CSS Reset e Configurações Globais */
-        :root {
-            --color-primary: #ef4444; /* vermelho */
-            --color-primary-dark: #dc2626;
-            --color-secondary: #3b82f6; /* azul */
-            --color-text-primary: #1f2937; /* cinza escuro */
-            --color-text-secondary: #4b5563; /* cinza médio */
-            --color-background-light: #f3f4f6; /* cinza claro */
-            --color-white: #ffffff;
-            --color-error: #dc2626; /* vermelho escuro para erros */
-            --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-family-sans);
-            background-color: var(--color-background-light);
-            color: var(--color-text-primary);
-            line-height: 1.6;
-        }
-
-        /* Utilitários */
-        .container {
-            width: 100%;
-            max-width: 1140px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
-
-        .section-padding {
-            padding-top: 5rem;
-            padding-bottom: 5rem;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-
-        .section-title {
-            font-size: 2.25rem;
-            font-weight: 800;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title .highlight, .subsection-title .highlight {
-             color: var(--color-primary);
-        }
-        
-        .subsection-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
-        
-        .related-products {
-            margin-top: 4rem;
-            padding: 3rem 2rem;
-            border-radius: 0.75rem;
-        }
-        
-        .related-products-bg-1 { background-color: #f9fafb; }
-        .related-products-bg-2 { background-color: #eff6ff; }
-        .related-products-bg-3 { background-color: #f0fdf4; }
-        .related-products-bg-4 { background-color: #fffbeb; }
-
-        .gradient-text {
-            background-image: linear-gradient(to right, #ef4444, #3b82f6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .btn {
-            display: inline-block;
-            font-weight: 700;
-            padding: 0.75rem 2rem;
-            border-radius: 9999px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            font-size: 0.875rem;
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: scale(1);
-        }
-
-        .btn-primary {
-            background-color: var(--color-primary);
-            color: var(--color-white);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background-color: var(--color-primary-dark);
-            transform: scale(1.05);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--color-primary);
-            border: 2px solid var(--color-primary);
-        }
-        
-        .btn-secondary:hover:not(:disabled) {
-            background-color: var(--color-primary);
-            color: var(--color-white);
-        }
-        
-        /* Animação de Rolagem */
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            will-change: opacity, transform;
-        }
-
-        .scroll-animate.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
-        }
-
-        /* Estilos do Header */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.1);
-        }
-
-        header nav.container {
-            display: flex;
-            align-items: center;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-decoration: none;
-        }
-
-        .nav-menu-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-            gap: 1rem;
-        }
-
-        .nav-links {
-            display: none; /* Oculto em telas pequenas */
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            position: relative;
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            padding-bottom: 0.25rem;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            transform: scaleX(0);
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--color-primary);
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
-
-        .nav-links a:hover {
-            color: var(--color-text-primary);
-        }
-        
-        .nav-links a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
-        
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .cart-toggle, .menu-toggle {
-            position: relative;
-            display: block;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 9999px;
-            transition: background-color 0.2s ease-in-out;
-        }
-
-        .cart-toggle:hover, .menu-toggle:hover {
-            background-color: rgba(0,0,0,0.05);
-        }
-        
-        .cart-toggle .icon, .menu-toggle .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--color-text-secondary);
-        }
-        
-        .cart-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: var(--color-primary);
-            color: var(--color-white);
-            border-radius: 50%;
-            width: 1.25rem;
-            height: 1.25rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: scale(0);
-            transition: transform 0.2s ease;
-        }
-        
-        .cart-badge.visible {
-            transform: scale(1);
-        }
-
-        /* Menu Mobile Animado */
-        .mobile-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background-color: var(--color-white);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            padding: 1rem 1.5rem;
-            border-top: 1px solid #e5e7eb;
-            opacity: 0;
-            transform: translateY(-10px);
-            pointer-events: none;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-
-        .mobile-menu.active {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-            visibility: visible;
-        }
-        
-        .mobile-menu a {
-            display: block;
-            text-align: center;
-            padding: 0.75rem 0;
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            border-radius: 0.375rem;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        
-        .mobile-menu a:hover {
-            background-color: #e5e7eb;
-            color: var(--color-text-primary);
-        }
-
-        /* Estilos do Hero */
-        .hero-section {
-            background-color: var(--color-white);
-            min-height: calc(100vh - 80px); /* Adjust based on header height */
-            display: flex;
-            align-items: center;
-        }
-        
-        .hero-content {
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .hero-text {
-            text-align: center;
-        }
-        
-        .hero-text h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-        
-        .hero-text p {
-            font-size: 1.125rem;
-            color: var(--color-text-secondary);
-            max-width: 42rem;
-            margin: 0 auto 2rem;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transition: transform 0.5s ease;
-        }
-
-        .hero-image img:hover {
-             transform: scale(1.05);
-        }
-
-        /* Keyframes for the scroll animation */
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Logo Carousel Section */
-        .logo-carousel-section {
-            background-color: var(--color-white);
-            padding-top: 3rem;
-            padding-bottom: 3rem;
-        }
-
-        .logo-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
-        }
-
-        .logo-carousel-track {
-            display: flex;
-            width: calc(200px * 14); /* (logo-slide width) * (number of logos * 2) */
-            animation: scroll 35s linear infinite;
-        }
-
-        .logo-carousel:hover .logo-carousel-track {
-            animation-play-state: paused;
-        }
-
-        .logo-slide {
-            flex-shrink: 0;
-            width: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0 1rem;
-        }
-
-        .logo-slide img {
-            max-width: 120px;
-            height: auto;
-            filter: grayscale(100%);
-            opacity: 0.6;
-            transition: filter 0.3s ease, opacity 0.3s ease;
-        }
-        
-        .logo-slide:hover img {
-            filter: grayscale(0%);
-            opacity: 1;
-        }
-
-        /* Estilos das Seções de Features (Sobre, FeatureOne, FeatureTwo) */
-        .feature-section {
-            background-color: var(--color-white);
-        }
-        
-        .feature-section.alt-bg {
-             background-color: var(--color-background-light);
-        }
-
-        .feature-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .feature-image, .feature-text {
-            width: 100%;
-        }
-
-        .feature-image img {
-            width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .feature-text h3 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-        
-        .feature-text p {
-            color: var(--color-text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.75;
-        }
-        
-        .feature-list {
-            list-style: none;
-            margin-top: 1.5rem;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            color: var(--color-text-secondary);
-        }
-
-        .feature-list .icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: var(--color-primary);
-            flex-shrink: 0;
-            margin-top: 0.125rem; /* Ajuste vertical */
-        }
-
-
-        /* Estilos da Seção de Produtos */
-        .products-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        
-        .product-card {
-            background-color: var(--color-white);
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-0.5rem);
-        }
-        
-        .product-card img {
-            width: 100%;
-            height: 12rem;
-            object-fit: cover;
-        }
-        
-        .product-card-content {
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        
-        .product-card-content h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        .product-card-content p {
-            color: var(--color-text-secondary);
-            flex-grow: 1;
-            margin-bottom: 1rem;
-        }
-        
-        .product-card-content .price {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--color-primary);
-            margin-bottom: 1rem;
-        }
-
-        .product-card-content .btn {
-            margin-top: auto;
-            text-align: center;
-        }
-        
-        /* Estilos do Carrossel */
-        .carousel-section {
-            padding-top: 5rem;
-            padding-bottom: 5rem;
-        }
-
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .carousel-slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-        
-        .carousel-slide {
-            min-width: 100%;
-            position: relative;
-        }
-        
-        .carousel-slide img {
-            width: 100%;
-            display: block;
-            height: 60vh;
-            object-fit: cover;
-        }
-        
-        .carousel-slide-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            color: var(--color-white);
-            padding: 3rem 2rem 2rem;
-        }
-        
-        .carousel-slide-caption h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-        
-        .carousel-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(255, 255, 255, 0.7);
-            border: none;
-            border-radius: 50%;
-            width: 3rem;
-            height: 3rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: background-color 0.3s ease;
-        }
-        
-        .carousel-button:hover {
-            background-color: var(--color-white);
-        }
-        
-        .carousel-button.prev {
-            left: 1rem;
-        }
-
-        .carousel-button.next {
-            right: 1rem;
-        }
-
-        .carousel-button .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--color-text-primary);
-        }
-        
-        .carousel-dots {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.75rem;
-            z-index: 10;
-        }
-        
-        .carousel-dot {
-            width: 0.75rem;
-            height: 0.75rem;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .carousel-dot.active {
-            background-color: var(--color-white);
-        }
-        
-        /* Estilos do Drawer (Orçamento) */
-        .drawer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-        
-        .drawer-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .drawer {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            max-width: 400px;
-            height: 100%;
-            background-color: var(--color-white);
-            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
-            z-index: 999;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .drawer.active {
-            transform: translateX(0);
-        }
-
-        .drawer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .drawer-header h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .drawer-close-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.25rem;
-        }
-        
-        .drawer-close-button .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--color-text-secondary);
-        }
-        
-        .drawer-body {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-        }
-
-        /* Estilos do Orçamento */
-        .cart-empty-message {
-            text-align: center;
-            color: var(--color-text-secondary);
-            padding-top: 4rem;
-        }
-
-        .cart-items {
-            list-style: none;
-        }
-        
-        .cart-item {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .cart-item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 0.375rem;
-        }
-        
-        .cart-item-details {
-            flex-grow: 1;
-        }
-        
-        .cart-item-details h4 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        
-        .cart-item-details .price {
-            color: var(--color-text-secondary);
-            font-size: 0.875rem;
-        }
-        
-        .cart-item-quantity {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .quantity-btn {
-            background-color: #e5e7eb;
-            border: none;
-            border-radius: 50%;
-            width: 1.75rem;
-            height: 1.75rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .quantity-btn:hover {
-            background-color: #d1d5db;
-        }
-        
-        .cart-item-subtotal {
-            font-weight: 700;
-        }
-
-        .cart-footer {
-            padding: 1.5rem;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .budget-observations textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 80px;
-            margin-top: 1rem;
-        }
-
-        #guest-info-form .form-group {
-            margin-bottom: 0.75rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.25rem;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 1rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-        }
-
-        .form-group input.invalid {
-            border-color: var(--color-error);
-            box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
-        }
-
-        .form-error-message {
-            color: var(--color-error);
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-top: 0.25rem;
-            min-height: 1.2em; /* Reserve space to prevent layout shift */
-        }
-
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
-        
-        .cart-checkout-button {
-            width: 100%;
-            padding: 1rem;
-            font-size: 1rem;
-        }
-
-        /* Estilos do Footer */
-        footer {
-            background-color: var(--color-text-primary);
-            color: #d1d5db; /* Lighter gray text */
-            padding-top: 5rem;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-
-        .footer-column .logo {
-            display: inline-block;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-decoration: none;
-        }
-
-        .footer-column > p {
-            color: #9ca3af;
-            line-height: 1.7;
-            max-width: 320px;
-        }
-
-        .footer-column h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--color-white);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li:not(:last-child) {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-links a {
-            color: #9ca3af;
-            text-decoration: none;
-            transition: color 0.3s ease, padding-left 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--color-primary);
-            padding-left: 0.5rem;
-        }
-
-        .newsletter-form {
-            display: flex;
-            margin-top: 1.5rem;
-        }
-
-        .newsletter-form input[type="email"] {
-            flex-grow: 1;
-            min-width: 0;
-            padding: 0.75rem 1rem;
-            border: 1px solid #4b5563;
-            background-color: #374151;
-            color: var(--color-white);
-            border-radius: 0.375rem 0 0 0.375rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .newsletter-form input[type="email"]:focus {
-            border-color: var(--color-primary);
-        }
-
-        .newsletter-form button {
-            font-weight: 600;
-            padding: 0.75rem 1rem;
-            border: none;
-            background-color: var(--color-primary);
-            color: var(--color-white);
-            cursor: pointer;
-            border-radius: 0 0.375rem 0.375rem 0;
-            transition: background-color 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .newsletter-form button:hover {
-            background-color: var(--color-primary-dark);
-        }
-
-        .footer-column .social-links {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .footer-column .social-links a {
-            color: #9ca3af;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .footer-column .social-links a:hover {
-            color: var(--color-white);
-            transform: translateY(-2px);
-        }
-        
-        .footer-column .social-links a[aria-label="Instagram"]:hover {
-            color: #E4405F; /* Instagram Pink */
-        }
-        .footer-column .social-links a[aria-label="Facebook"]:hover {
-            color: #1877F2; /* Facebook Blue */
-        }
-        .footer-column .social-links a[aria-label="WhatsApp"]:hover {
-            color: #25D366; /* WhatsApp Green */
-        }
-
-        .footer-column .social-links .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            text-align: center;
-        }
-
-        .footer-bottom p {
-            font-size: 0.875rem;
-            color: #9ca3af;
-            margin: 0;
-        }
-        
-        /* ============================================= */
-        /*                 CHAT WIDGET                   */
-        /* ============================================= */
-        .chat-fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 4rem;
-            height: 4rem;
-            border-radius: 50%;
-            background-color: var(--color-primary);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 1000;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        
-        .chat-fab:hover {
-            background-color: var(--color-primary-dark);
-            transform: scale(1.1);
-        }
-        
-        .chat-fab .icon {
-            width: 2rem;
-            height: 2rem;
-        }
-
-        .chat-widget-container {
-            position: fixed;
-            bottom: 7rem;
-            right: 2rem;
-            width: 90vw;
-            max-width: 400px;
-            height: 70vh;
-            max-height: 600px;
-            background-color: var(--color-white);
-            border-radius: 0.75rem;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            z-index: 1001;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-        
-        .chat-widget-container.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            visibility: visible;
-        }
-        
-        .chat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background-color: var(--color-primary);
-            color: var(--color-white);
-            flex-shrink: 0;
-        }
-        
-        .chat-header h3 {
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .chat-close-btn {
-            background: none;
-            border: none;
-            color: var(--color-white);
-            font-size: 1.75rem;
-            font-weight: 300;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0;
-        }
-        
-        .chat-log {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .chat-message {
-            max-width: 80%;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            line-height: 1.5;
-            word-wrap: break-word;
-        }
-        
-        .chat-message strong {
-            color: var(--color-primary);
-        }
-
-        .chat-message.ai {
-            background-color: #e5e7eb;
-            color: var(--color-text-primary);
-            border-bottom-left-radius: 0.25rem;
-            align-self: flex-start;
-        }
-        
-        .chat-message.user {
-            background-color: var(--color-primary);
-            color: var(--color-white);
-            border-bottom-right-radius: 0.25rem;
-            align-self: flex-end;
-        }
-        
-        .chat-message.typing-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .chat-message.typing-indicator .dot {
-            width: 8px;
-            height: 8px;
-            background-color: #9ca3af;
-            border-radius: 50%;
-            animation: typing-blink 1.4s infinite both;
-        }
-        
-        .chat-message.typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
-        .chat-message.typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing-blink {
-            0% { opacity: 0.2; }
-            20% { opacity: 1; }
-            100% { opacity: 0.2; }
-        }
-        
-        .chat-input-area {
-            display: flex;
-            padding: 1rem;
-            border-top: 1px solid #e5e7eb;
-            gap: 0.5rem;
-        }
-        
-        #chat-input {
-            flex-grow: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            border-radius: 9999px;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        
-        #chat-input:focus {
-             border-color: var(--color-primary);
-             box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
-        }
-        
-        #chat-send-btn {
-            flex-shrink: 0;
-            width: 3rem;
-            height: 3rem;
-            border: none;
-            background-color: var(--color-primary);
-            color: var(--color-white);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
-        
-        #chat-send-btn:hover:not(:disabled) {
-            background-color: var(--color-primary-dark);
-        }
-        
-        #chat-send-btn .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-        
-        #chat-send-btn:disabled {
-            background-color: #d1d5db;
-            cursor: not-allowed;
-        }
-
-
-        /* Media Queries para Responsividade */
-        @media (min-width: 768px) {
-            /* Header */
-            .nav-links {
-                display: flex;
-            }
-            .menu-toggle {
-                display: none;
-            }
-
-            /* Hero */
-            .hero-content {
-                flex-direction: row;
-                gap: 3rem;
-            }
-            .hero-text {
-                text-align: left;
-                width: 50%;
-            }
-            .hero-image {
-                width: 50%;
-            }
-            .hero-text h1 {
-                font-size: 3.75rem;
-            }
-            .hero-text p {
-                margin-left: 0;
-                margin-right: 0;
-            }
-            
-            /* Features */
-            .feature-content {
-                 flex-direction: row;
-            }
-            .feature-content.reverse {
-                flex-direction: row-reverse;
-            }
-            .feature-image, .feature-text {
-                width: 50%;
-            }
-            .feature-list {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem 2rem; /* espaçamento de linha e coluna */
-            }
-            
-            /* Produtos */
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            /* Footer */
-             .footer-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 4rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-             .chat-widget-container {
-                bottom: 1rem;
-                right: 1rem;
-                width: calc(100vw - 2rem);
-             }
-             .chat-fab {
-                 bottom: 1rem;
-                 right: 1rem;
-             }
-        }
-
-        @media (min-width: 1024px) {
-            /* Produtos */
-            .products-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-
-            /* Footer */
-            .footer-grid {
-                grid-template-columns: 3fr 2fr 2fr 3fr;
-            }
-        }
-
-    </style>
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.21.0"
-  }
-}
-</script>
+    <title>Teknoluvas - Cotações</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="/script.js"></script>
 </head>
+
 <body>
     
     <!-- ============================================= -->
@@ -1280,9 +24,11 @@
             <div class="nav-menu-wrapper">
                 <!-- Links para Desktop -->
                 <div class="nav-links">
-                    <a href="#home">Início</a>
-                    <a href="#solucoes">Soluções</a>
-                    <a href="#ia">IA & Dados</a>
+                    <a href="#home">     Início      </a>
+                    <a href="#solucoes"> Soluções    </a>
+                    <a href="#cabeça">   Cabeça      </a>
+                    <a href="#tronco">   Tronco      </a>
+                    <a href="#ia">       IA & Dados  </a>
                 </div>
 
                 <div class="header-controls">
@@ -1302,9 +48,10 @@
         </nav>
         <!-- Menu Mobile -->
         <div id="mobile-menu" class="mobile-menu">
-            <a href="#home">Início</a>
-            <a href="#solucoes">Soluções</a>
-            <a href="#ia">IA & Dados</a>
+            <a href="#home">      Início      </a>
+            <a href="#solucoes">  Soluções    </a>
+            <a href="#ia">        IA & Dados  </a>
+
         </div>
     </header>
 
@@ -1314,15 +61,18 @@
         <!-- ============================================= -->
         <section id="home" class="hero-section section-padding">
             <div class="container">
+
                 <div class="hero-content">
                     <div class="hero-text scroll-animate">
-                        <h1>Criando <span class="gradient-text">Experiências Digitais</span></h1>
-                        <p>Construímos aplicações web bonitas, responsivas e de alto desempenho que impulsionam o crescimento e encantam os usuários.</p>
-                        <a href="#solucoes" class="btn btn-primary">Explore Nossas Soluções</a>
+                        <h1>Melhores <span class="gradient-text">Equipamentos de Segurança.</span></h1>
+                        <p>Os melhores EPI's do mercado para sua segurança feitos com tecnologia de ponta e com certificação.</p>
+                        <a href="https://api.whatsapp.com/send/?phone=5514991122754&text&type=phone_number&app_absent=0" class="btn btn-primary">Saiba Mais</a>
                     </div>
+
                     <div class="hero-image scroll-animate">
-                        <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=2070&auto=format&fit=crop" alt="Espaço de trabalho digital com dispositivos">
+                        <img src="epi´s.png">
                     </div>
+
                 </div>
             </div>
         </section>
@@ -1332,26 +82,28 @@
         <!-- ============================================= -->
         <section class="logo-carousel-section">
             <div class="container">
-                <h3 class="text-center scroll-animate" style="color: var(--color-text-secondary); font-weight: 500; margin-bottom: 2rem;">Tecnologias e parceiros que confiam em nosso trabalho</h3>
+                <h3 class="text-center scroll-animate" style="color: var(--color-text-secondary); font-weight: 500; margin-bottom: 2rem;">Nossos Clientes</h3>
                 <div class="logo-carousel scroll-animate">
                     <div class="logo-carousel-track">
+
                         <!-- Logos (Set 1) -->
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React" alt="Logo da React"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js" alt="Logo da Node.js"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS" alt="Logo da AWS"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js" alt="Logo da Next.js"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma" alt="Logo da Figma"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe" alt="Logo da Stripe"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel" alt="Logo da Vercel"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React"     alt="Logo da React">    </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js"   alt="Logo da Node.js">  </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS"       alt="Logo da AWS">      </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js"   alt="Logo da Next.js">  </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma"     alt="Logo da Figma">    </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe"    alt="Logo da Stripe">   </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel"    alt="Logo da Vercel">   </div>
                         
                         <!-- Logos (Set 2 for infinite loop) -->
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React" alt="Logo da React"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js" alt="Logo da Node.js"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS" alt="Logo da AWS"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js" alt="Logo da Next.js"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma" alt="Logo da Figma"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe" alt="Logo da Stripe"></div>
-                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel" alt="Logo da Vercel"></div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=React"     alt="Logo da React">    </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Node.js"   alt="Logo da Node.js">  </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=AWS"       alt="Logo da AWS">      </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Next.js"   alt="Logo da Next.js">  </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Figma"     alt="Logo da Figma">    </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Stripe"    alt="Logo da Stripe">   </div>
+                        <div class="logo-slide"><img src="https://placehold.co/150x50/e2e8f0/475569?text=Vercel"    alt="Logo da Vercel">   </div>
+
                     </div>
                 </div>
             </div>
@@ -1363,79 +115,136 @@
         <!-- ============================================= -->
         <section id="solucoes" class="feature-section section-padding">
             <div class="container">
-                <h2 class="section-title text-center scroll-animate">Nossas <span class="highlight">Soluções</span></h2>
-                <div class="feature-content scroll-animate">
-                    <div class="feature-image">
-                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop" alt="Equipe colaborando em um escritório moderno">
-                    </div>
+                <h2 class="section-title text-center scroll-animate">Nossos <span class="highlight">Produtos</span></h2>
+                <p class="text-center scroll-animate" style="max-width: 800px; margin: -2rem auto 4rem; color: var(--color-text-secondary);">
+                    não vendemos apenas Equipamentos de Proteção Individual — oferecemos segurança, confiança e eficiência para o seu negócio. 
+                    Cada produto que você adquire conosco vem acompanhado de soluções pensadas
+                    para facilitar sua rotina e garantir que sua equipe esteja sempre protegida e em conformidade com as normas.
+                </p><br><br>
+
+                <div class="feature-content scroll-animate" section id="cabeça">
+
+                    <video video autoplay loop muted width="400" height="400" >
+                        <source src="antichamas capuz.mp4" type="video/mp4">
+                    </video>
+
                     <div class="feature-text">
-                        <h3>Soluções Corporativas Personalizadas</h3>
-                        <p>Desenvolvemos sistemas robustos e escaláveis que se integram perfeitamente aos fluxos de trabalho existentes da sua empresa. Nossas soluções corporativas otimizam processos, aumentam a produtividade e fornecem insights valiosos através de painéis de dados intuitivos.</p>
+
+                        <h2 class="section-title text-center scroll-animate"> Proteção para <span class="highlight"> Cabeça</span></h2>
+
+                        <p> 
+                            Nossos equipamentos de proteção para a cabeça são desenvolvidos para resistir a impactos,
+                            altas temperaturas e ambientes de risco, garantindo conforto e durabilidade. Seja em áreas industriais,
+                            construção civil ou trabalhos com solda, oferecemos soluções que atendem às normas técnicas e protegem o que é mais importante: a vida.
+                        </p>
+
                         <ul class="feature-list">
-                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Automação de Processos</span></li>
-                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Integração de Sistemas</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Melhor Qualidade</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Mais Conforto</span></li>
                             <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Segurança Avançada</span></li>
-                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Relatórios Customizados</span></li>
+                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Com C.A. de aprovação</span></li>
                         </ul>
+
                     </div>
+
                 </div>
                 
                 <!-- PRODUTOS RELACIONADOS 1 -->
                 <div class="related-products related-products-bg-1 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
+                        
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="Intranet Corporativa Inteligente">
+                            <img src="nuca1.png">
+
                             <div class="product-card-content">
-                                <h3>Intranet Corporativa Inteligente</h3>
-                                <p>Conecte sua equipe, centralize documentos e automatize comunicados com um portal seguro.</p>
-                                <p class="price">R$ 7.500</p>
-                                <button class="btn btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Intranet Corporativa Inteligente" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                                <h3>Capuz Soldador TKS 01 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="1" data-product-name="Capuz tks1 / código 123456" 
+                                data-product-price="1" 
+                                data-product-image="https://teknoluvas.com.br/wp-content/uploads/2023/12/capuz_soldador_tks_01_teknoluvas_131_1_7f955598883afbd0fc4622afdac9f4e3_20230823104839.jpg">Adicionar ao Orçamento</button>
                             </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1587825140708-df8769a5b8de?q=80&w=2070&auto=format&fit=crop" alt="Sistema de Gestão (ERP) na Nuvem">
+                            <img src="nuca2.png">
+
                             <div class="product-card-content">
-                                <h3>Sistema de Gestão (ERP) na Nuvem</h3>
-                                <p>Unifique finanças, estoque e operações com um ERP flexível e acessível de qualquer lugar.</p>
-                                <p class="price">R$ 9.800</p>
-                                <button class="btn btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Sistema de Gestão (ERP) na Nuvem" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1587825140708-df8769a5b8de?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                                <h3>Capuz Soldador TKS 02 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+                                
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+                              
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="2" data-product-name="Capuz tks2 / código 1233" 
+                                data-product-price="1" 
+                                data-product-image="https://teknoluvas.com.br/wp-content/uploads/2023/12/capuz_soldador_tks_02_teknoluvas_133_1_952bd5247a7c3f75c2de998e05662b23_20230823104840.jpg">Adicionar ao Orçamento</button>
                             </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de Business Intelligence (BI)">
+                            <img src="nuca3.png">
+
                             <div class="product-card-content">
-                                <h3>Plataforma de Business Intelligence (BI)</h3>
-                                <p>Transforme dados em dashboards interativos para decisões estratégicas mais rápidas.</p>
-                                <p class="price">R$ 6.200</p>
-                                <button class="btn btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Plataforma de BI" data-product-price="6200" data-product-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                                <h3>Capuz Modelo Tradicional – Teknoluvas</h3>
+                                <p>Serviços que apresentam riscos mecânicos, escoriantes, agentes abrasivos, exposição solar intensa, como trabalhadores rurais.</p>
+                                <p class="price">R$ 1 </p>
+                                
+                                <a href="https://consultaca.com/37348/capuz-ou-balaclava"class="btn btn-basto">CA: 37.348</a><br>
+                              
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="3" data-product-name="Capuz Modelo Tradicional / código 777777" 
+                                data-product-price="1" 
+                                data-product-image="https://teknoluvas.com.br/wp-content/uploads/2023/12/capuz_para_soldador_modelo_tradicional_teknoluvas_135_1_20230823104841.jpg">Adicionar ao Orçamento</button>
                             </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop" alt="Automação de Processos (RPA)">
+                            <img src="nuca4.png">
+
                             <div class="product-card-content">
-                                <h3>Automação de Processos (RPA)</h3>
-                                <p>Elimine tarefas repetitivas com robôs de software que otimizam fluxos de trabalho.</p>
-                                <p class="price">R$ 5.500</p>
-                                <button class="btn btn-primary add-to-cart-btn" data-product-id="4" data-product-name="Automação de Processos (RPA)" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                                <h3>TOUCA DE RASPA – TEKNOLUVAS</h3>
+                                <p>Touca para soldador confeccionada em raspa de couro bovino tipo grupon, costurada com algodão ou Kevlar. Possui grande resistência e aderência.</p>
+                                <p class="price">R$ 1 </p>
+                                
+                                <a href="https://consultaca.com"class="btn btn-basto">CA: ISENTO</a><br>
+                              
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="4" data-product-name="TOUCA DE RASPA / código 88888" 
+                                data-product-price="1" 
+                                data-product-image="https://teknoluvas.com.br/wp-content/uploads/2023/12/1.jpg">Adicionar ao Orçamento</button>
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </section>
 
         <!-- ============================================= -->
         <!--                 FEATURE SECTION 2             -->
         <!-- ============================================= -->
-        <section id="ecommerce" class="feature-section alt-bg section-padding">
+        <section id="tronco" class="feature-section alt-bg section-padding">
             <div class="container">
                 <div class="feature-content reverse scroll-animate">
-                    <div class="feature-image">
-                        <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?q=80&w=2070&auto=format&fit=crop" alt="Pessoa usando um aplicativo de e-commerce em um smartphone">
-                    </div>
+
+                    <video video autoplay loop muted width="400" height="400" >
+                        <source src="antichamas blusa.mp4" type="video/mp4">
+                    </video>
+
                     <div class="feature-text">
-                        <h3>Plataformas de E-commerce Vibrantes</h3>
+
+                        <h2 class="section-title text-center scroll-animate"> Proteção para <span class="highlight"> Tronco</span></h2>
+
                         <p>Transformamos sua visão de varejo em uma loja online cativante e de alta conversão. Focamos em uma experiência de usuário impecável, desde a navegação intuitiva até um processo de checkout seguro e simplificado.</p>
                         <ul class="feature-list">
                             <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Checkout Otimizado</span></li>
@@ -1443,31 +252,94 @@
                             <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Gestão de Inventário</span></li>
                             <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Marketing Integrado</span></li>
                         </ul>
+
                     </div>
+
                 </div>
+
                 <!-- PRODUTOS RELACIONADOS 2 -->
                 <div class="related-products related-products-bg-2 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
+
                     <div class="products-grid">
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Loja Virtual Premium">
-                            <div class="product-card-content"><h3>Loja Virtual Premium</h3><p>Uma experiência de compra otimizada para impulsionar suas vendas online.</p><p class="price">R$ 5.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Loja Virtual Premium" data-product-price="5500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+
+                            <img src="peito1.png">
+
+                            <div class="product-card-content">
+                                <h3>Capuz Soldador TKS 01 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="5" data-product-name="Loja Virtual Premium" data-product-price="1" 
+                                data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Marketplace Solution">
-                            <div class="product-card-content"><h3>Marketplace Solution</h3><p>Crie seu shopping virtual com múltiplos vendedores e fontes de receita.</p><p class="price">R$ 12.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Marketplace Solution" data-product-price="12000" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+
+                            <img src="peito2.png">
+
+                            <div class="product-card-content">
+
+                                <h3>Capuz Soldador TKS 01 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="6" data-product-name="Marketplace Solution" data-product-price="1" 
+                                data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Sistema de PDV e Estoque">
-                            <div class="product-card-content"><h3>Sistema de PDV e Estoque</h3><p>Sincronize suas vendas físicas e online com um inventário unificado.</p><p class="price">R$ 4.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Sistema de PDV e Estoque" data-product-price="4800" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+
+                            <img src="peito3.png">
+
+                            <div class="product-card-content">
+                                <h3>Capuz Soldador TKS 01 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+
+
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="7" data-product-name="Sistema de PDV e Estoque" data-product-price="1" 
+                                data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
+
                         </div>
+
                         <div class="product-card scroll-animate">
-                            <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="App de Compras Mobile">
-                            <div class="product-card-content"><h3>App de Compras Mobile</h3><p>Leve sua loja para o bolso dos seus clientes com um aplicativo nativo.</p><p class="price">R$ 9.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="8" data-product-name="App de Compras Mobile" data-product-price="9800" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+
+                            <img src="peito4.png">
+
+                            <div class="product-card-content">
+                                <h3>Capuz Soldador TKS 01 – Teknoluvas</h3>
+                                <p>Produzido em brim antichama, costurado com linha de aramida, fechamento em velcro permitindo regulagem e elástico.</p>
+                                <p class="price">R$ 1 </p>
+
+                                <a href="https://consultaca.com/47030"class="btn btn-basto">CA: 47.030</a><br>
+
+
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="8" data-product-name="App de Compras Mobile" data-product-price="1" 
+                                data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button>
+                            </div>
+
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </section>
         
         <!-- ============================================= -->
@@ -1475,10 +347,13 @@
         <!-- ============================================= -->
         <section id="web-apps" class="feature-section section-padding">
             <div class="container">
+
                 <div class="feature-content scroll-animate">
+
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop" alt="Gráficos e painéis de dados em uma tela">
                     </div>
+
                     <div class="feature-text">
                         <h3>Aplicações Web Interativas</h3>
                         <p>Especializamo-nos na criação de Aplicações de Página Única (SPAs) que oferecem uma experiência de usuário fluida e semelhante à de um aplicativo de desktop. Usando as tecnologias mais recentes, construímos painéis de controle e plataformas sociais que são rápidas e ricas em recursos.</p>
@@ -1489,30 +364,51 @@
                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>APIs Robustas</span></li>
                         </ul>
                     </div>
+
                 </div>
                 <!-- PRODUTOS RELACIONADOS 3 -->
                 <div class="related-products related-products-bg-3 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Plataforma SaaS">
-                            <div class="product-card-content"><h3>Plataforma SaaS</h3><p>Lance seu software como serviço com nosso framework escalável e seguro.</p><p class="price">R$ 7.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Plataforma SaaS" data-product-price="7900" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Plataforma SaaS</h3><p>Lance seu software como serviço com nosso framework escalável e seguro.</p>
+                                <p class="price">R$ 7.900</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="9" data-product-name="Plataforma SaaS" data-product-price="7900" 
+                                data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Dashboard Interativo">
-                            <div class="product-card-content"><h3>Dashboard Interativo</h3><p>Uma ferramenta poderosa para visualização de dados em tempo real.</p><p class="price">R$ 3.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Dashboard Interativo" data-product-price="3500" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Dashboard Interativo</h3><p>Uma ferramenta poderosa para visualização de dados em tempo real.</p>
+                            <p class="price">R$ 3.500</p>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="10" data-product-name="Dashboard Interativo" data-product-price="3500" 
+                            data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Portal do Cliente">
-                            <div class="product-card-content"><h3>Portal do Cliente</h3><p>Ofereça autoatendimento e suporte 24/7 para seus clientes.</p><p class="price">R$ 4.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Portal do Cliente" data-product-price="4000" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Portal do Cliente</h3><p>Ofereça autoatendimento e suporte 24/7 para seus clientes.</p>
+                            <p class="price">R$ 4.000</p>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="11" data-product-name="Portal do Cliente" data-product-price="4000" 
+                            data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Rede Social Corporativa">
-                            <div class="product-card-content"><h3>Rede Social Corporativa</h3><p>Conecte seus colaboradores e fortaleça a cultura da sua empresa.</p><p class="price">R$ 5.800</p><button class="btn btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Rede Social Corporativa" data-product-price="5800" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Rede Social Corporativa</h3><p>Conecte seus colaboradores e fortaleça a cultura da sua empresa.</p>
+                            <p class="price">R$ 5.800</p>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="12" data-product-name="Rede Social Corporativa" data-product-price="5800" 
+                            data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </section>
         
         <!-- ============================================= -->
@@ -1521,9 +417,11 @@
         <section id="ia" class="feature-section alt-bg section-padding">
             <div class="container">
                 <div class="feature-content reverse scroll-animate">
+
                     <div class="feature-image">
                         <img src="https://images.unsplash.com/photo-1620712943543-2858200f745a?q=80&w=2069&auto=format&fit=crop" alt="Visualização abstrata de dados e inteligência artificial">
                     </div>
+
                     <div class="feature-text">
                         <h3>Inteligência de Dados e IA</h3>
                         <p>Desbloqueie o potencial dos seus dados. Criamos soluções de inteligência artificial que transformam informações em vantagem competitiva, com modelos de machine learning para prever tendências, automatizar tarefas e personalizar a experiência do seu cliente.</p>
@@ -1533,42 +431,71 @@
                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Modelos de Machine Learning</span></li>
                            <li><svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><span>Automação com IA</span></li>
                         </ul>
+
                     </div>
+
                 </div>
+
                 <!-- PRODUTOS RELACIONADOS 4 -->
                 <div class="related-products related-products-bg-4 scroll-animate">
                     <h3 class="subsection-title">Produtos <span class="highlight">Relacionados</span></h3>
                     <div class="products-grid">
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop" alt="Motor de Recomendação">
-                            <div class="product-card-content"><h3>Motor de Recomendação</h3><p>Personalize a experiência do usuário com sugestões de produtos inteligentes.</p><p class="price">R$ 7.500</p><button class="btn btn-primary add-to-cart-btn" data-product-id="13" data-product-name="Motor de Recomendação" data-product-price="7500" data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Motor de Recomendação</h3><p>Personalize a experiência do usuário com sugestões de produtos inteligentes.</p>
+                                <p class="price">R$ 7.500</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="13" data-product-name="Motor de Recomendação" data-product-price="7500" 
+                                data-product-image="https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="Análise de Sentimento">
-                            <div class="product-card-content"><h3>Análise de Sentimento</h3><p>Entenda a opinião dos seus clientes em tempo real a partir de redes sociais e reviews.</p><p class="price">R$ 6.000</p><button class="btn btn-primary add-to-cart-btn" data-product-id="14" data-product-name="Análise de Sentimento" data-product-price="6000" data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Análise de Sentimento</h3><p>Entenda a opinião dos seus clientes em tempo real a partir de redes sociais e reviews.</p>
+                                <p class="price">R$ 6.000</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="14" data-product-name="Análise de Sentimento" data-product-price="6000" 
+                                data-product-image="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop" alt="Previsão de Demanda">
-                            <div class="product-card-content"><h3>Previsão de Demanda</h3><p>Otimize seu estoque e logística com previsões de vendas baseadas em IA.</p><p class="price">R$ 8.200</p><button class="btn btn-primary add-to-cart-btn" data-product-id="15" data-product-name="Previsão de Demanda" data-product-price="8200" data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Previsão de Demanda</h3><p>Otimize seu estoque e logística com previsões de vendas baseadas em IA.</p>
+                                <p class="price">R$ 8.200</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="15" data-product-name="Previsão de Demanda" data-product-price="8200" 
+                                data-product-image="https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                         <div class="product-card scroll-animate">
                             <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Chatbot Cognitivo">
-                            <div class="product-card-content"><h3>Chatbot Cognitivo</h3><p>Automatize o atendimento ao cliente com um assistente virtual que aprende e evolui.</p><p class="price">R$ 5.900</p><button class="btn btn-primary add-to-cart-btn" data-product-id="16" data-product-name="Chatbot Cognitivo" data-product-price="5900" data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
+                            <div class="product-card-content"><h3>Chatbot Cognitivo</h3><p>Automatize o atendimento ao cliente com um assistente virtual que aprende e evolui.</p>
+                                <p class="price">R$ 5.900</p>
+                                <button class="btn btn-primary add-to-cart-btn" data-product-id="16" data-product-name="Chatbot Cognitivo" data-product-price="5900" 
+                                data-product-image="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop">Adicionar ao Orçamento</button></div>
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </section>
 
         <!-- ============================================= -->
         <!--                CAROUSEL SECTION               -->
         <!-- ============================================= -->
         <section id="showcase" class="carousel-section">
+
             <div class="container">
                 <h2 class="section-title text-center scroll-animate">Veja Nossas Soluções em <span class="highlight">Ação</span></h2>
+                <p class="text-center scroll-animate" style="max-width: 700px; margin: -2rem auto 3rem; color: var(--color-text-secondary);">
+                    Navegue pela nossa galeria para ver exemplos de como transformamos ideias em realidade. Cada projeto é uma demonstração do nosso compromisso com a excelência, combinando design intuitivo, tecnologia de ponta e foco total nos resultados do cliente.
+                </p>
             </div>
+
             <div class="carousel-container scroll-animate">
                 <div class="carousel-slides">
+
                     <!-- Slide 1 -->
                     <div class="carousel-slide">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Dashboard de Business Intelligence">
@@ -1576,6 +503,7 @@
                             <h3>Dashboards Interativos para Tomada de Decisão</h3>
                         </div>
                     </div>
+
                     <!-- Slide 2 -->
                     <div class="carousel-slide">
                         <img src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2070&auto=format&fit=crop" alt="Plataforma de E-commerce em um tablet">
@@ -1583,6 +511,7 @@
                             <h3>Plataformas de E-commerce que Convertem</h3>
                         </div>
                     </div>
+
                     <!-- Slide 3 -->
                     <div class="carousel-slide">
                         <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" alt="Sistema de CRM em um laptop">
@@ -1590,6 +519,7 @@
                             <h3>Sistemas Corporativos que Otimizam Processos</h3>
                         </div>
                     </div>
+
                     <!-- Slide 4 -->
                     <div class="carousel-slide">
                         <img src="https://images.unsplash.com/photo-1677756119517-756a188d2278?q=80&w=1974&auto=format&fit=crop" alt="Chatbot de IA conversando com um usuário">
@@ -1602,6 +532,7 @@
                 <button class="carousel-button prev" aria-label="Slide anterior">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
+
                 <button class="carousel-button next" aria-label="Próximo slide">
                     <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
@@ -1615,18 +546,23 @@
     <!-- ============================================= -->
     <!--          DRAWER OVERLAY (SHARED)              -->
     <!-- ============================================= -->
+
     <div id="drawer-overlay" class="drawer-overlay"></div>
 
     <!-- ============================================= -->
     <!--                 BUDGET DRAWER                 -->
     <!-- ============================================= -->
     <aside id="cart-drawer" class="drawer" aria-labelledby="cart-heading">
+
         <div class="drawer-header">
             <h3 id="cart-heading">Meu Orçamento</h3>
+
             <button id="cart-close-button" class="drawer-close-button" aria-label="Fechar orçamento">
                 <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
+            
         </div>
+        
         <div class="drawer-body">
             <ul id="cart-items" class="cart-items">
                 <!-- Itens do orçamento serão inseridos aqui via JS -->
@@ -1639,6 +575,7 @@
                 <p>Seu orçamento está vazio.</p>
             </div>
         </div>
+
         <div class="cart-footer">
             <div id="guest-info-form">
                 <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: 1rem;">Preencha seus dados para enviar o orçamento.</p>
@@ -1658,11 +595,14 @@
                      <div id="guest-phone-error" class="form-error-message"></div>
                 </div>
             </div>
+
             <div class="cart-total">
                 <span>Total</span>
                 <span id="cart-total-price">R$ 0,00</span>
             </div>
-            <button class="btn btn-primary cart-checkout-button">Enviar Orçamento via WhatsApp</button>
+
+            <button class="btn btn-primary cart-checkout-button">Enviar Orçamento por WhatsApp</button>
+
         </div>
     </aside>
 
@@ -1672,6 +612,7 @@
     <footer>
         <div class="container">
             <div class="footer-grid">
+
                 <!-- Coluna 1: Sobre -->
                 <div class="footer-column">
                     <a href="#home" class="logo gradient-text">Teknoluvas</a>
@@ -1682,6 +623,7 @@
                         <a href="#" aria-label="WhatsApp"><svg class="icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>WhatsApp</title><path d="M12.061 0C5.425 0 0 5.373 0 12.001c0 2.101.543 4.103 1.58 5.894L.025 24l6.238-1.652a11.956 11.956 0 0 0 5.798 1.502h.002c6.637 0 12.001-5.373 12.001-12.001C24.063 5.373 18.698 0 12.061 0zm0 21.819c-1.895 0-3.695-.53-5.228-1.488l-.376-.223-3.878 1.028 1.045-3.784-.244-.395a9.883 9.883 0 0 1-1.58-5.155c0-5.463 4.465-9.894 9.961-9.894 5.496 0 9.961 4.43 9.961 9.894s-4.465 9.894-9.961 9.894zm5.224-6.878c-.282-.142-1.662-.82-1.92-.914-.258-.094-.446-.142-.633.142-.188.283-.726.914-.89 1.1-.164.185-.328.209-.61.067-.282-.142-1.192-.44-2.27-1.399- .839-.745-1.405-1.662-1.57-1.944-.164-.283-.018-.433.125-.575.129-.129.283-.328.425-.492.143-.164.188-.283.282-.47.094-.188.047-.352-.023-.493-.07-.143-.633-1.523-.868-2.086-.226-.544-.453-.469-.633-.478-.17-.01-.357-.01-.544-.01-.188 0-.493.07-.749.352-.259.283-1.003.98-1.003 2.383s1.026 2.768 1.17 2.953c.142.188 2.015 3.078 4.887 4.314 2.873 1.236 2.873.824 3.397.796.524-.027 1.662-.679 1.897-1.336.236-.656.236-1.218.164-1.336-.072-.12-.259-.186-.541-.328z"/></svg></a>
                     </div>
                 </div>
+
                 <!-- Coluna 2: Soluções -->
                 <div class="footer-column">
                     <h4>Soluções</h4>
@@ -1692,6 +634,7 @@
                         <li><a href="#ia">IA & Dados</a></li>
                     </ul>
                 </div>
+
                 <!-- Coluna 3: Contato Rápido -->
                 <div class="footer-column">
                     <h4>Contato Rápido</h4>
@@ -1700,6 +643,7 @@
                         <li><a href="tel:+5511999998888">+55 (11) 99999-8888</a></li>
                     </ul>
                 </div>
+
                 <!-- Coluna 4: Newsletter -->
                 <div class="footer-column">
                     <h4>Fique por Dentro</h4>
@@ -1710,467 +654,16 @@
                         <button type="submit">Inscrever</button>
                     </form>
                 </div>
+
             </div>
+
             <div class="footer-bottom">
                 <p>&copy; 2024 Teknoluvas. Todos os direitos reservados.</p>
             </div>
+
         </div>
+
     </footer>
-    
-    <!-- ============================================= -->
-    <!--                  CHAT WIDGET                  -->
-    <!-- ============================================= -->
-    <button id="chat-fab" class="chat-fab" aria-label="Abrir chat com assistente IA">
-        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-    </button>
-    <div id="chat-widget-container" class="chat-widget-container">
-        <div class="chat-header">
-            <h3>Assistente IA</h3>
-            <button id="chat-close-btn" class="chat-close-btn" aria-label="Fechar chat">&times;</button>
-        </div>
-        <div id="chat-log" class="chat-log">
-            <!-- As mensagens do chat serão inseridas aqui -->
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="chat-input" placeholder="Pergunte sobre nossas soluções...">
-            <button id="chat-send-btn" aria-label="Enviar mensagem">
-                 <svg class="icon" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
-            </button>
-        </div>
-    </div>
 
-
-    <script type="module">
-        import { GoogleGenAI } from "@google/genai";
-    
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Mobile Menu Logic ---
-            const menuButton = document.getElementById('menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const openIcon = document.getElementById('menu-open-icon');
-            const closeIcon = document.getElementById('menu-close-icon');
-
-            if (menuButton && mobileMenu && openIcon && closeIcon) {
-                menuButton.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('active');
-                    const isActive = mobileMenu.classList.contains('active');
-                    openIcon.style.display = isActive ? 'none' : 'block';
-                    closeIcon.style.display = isActive ? 'block' : 'none';
-                    menuButton.setAttribute('aria-expanded', String(isActive));
-                });
-
-                mobileMenu.querySelectorAll('a').forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.remove('active');
-                        openIcon.style.display = 'block';
-                        closeIcon.style.display = 'none';
-                        menuButton.setAttribute('aria-expanded', 'false');
-                    });
-                });
-            }
-
-            // --- Carousel Logic ---
-            const carousel = document.querySelector('.carousel-container');
-            if (carousel) {
-                const slidesContainer = carousel.querySelector('.carousel-slides');
-                const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
-                const prevButton = carousel.querySelector('.carousel-button.prev');
-                const nextButton = carousel.querySelector('.carousel-button.next');
-                const dotsContainer = carousel.querySelector('.carousel-dots');
-                let currentIndex = 0;
-                const slideCount = slides.length;
-                let autoplayInterval = null;
-
-                if (dotsContainer && slideCount > 0) {
-                    slides.forEach((_, i) => {
-                        const dot = document.createElement('button');
-                        dot.classList.add('carousel-dot');
-                        dot.setAttribute('aria-label', `Ir para o slide ${i + 1}`);
-                        if (i === 0) dot.classList.add('active');
-                        dotsContainer.appendChild(dot);
-                        dot.addEventListener('click', () => {
-                            goToSlide(i);
-                            resetAutoplay();
-                        });
-                    });
-                }
-                
-                const dots = dotsContainer ? Array.from(dotsContainer.querySelectorAll('.carousel-dot')) : [];
-
-                const goToSlide = (index) => {
-                    currentIndex = (index + slideCount) % slideCount;
-                    slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-                    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
-                };
-
-                const nextSlide = () => goToSlide(currentIndex + 1);
-                const startAutoplay = () => {
-                    if (autoplayInterval) clearInterval(autoplayInterval);
-                    autoplayInterval = setInterval(nextSlide, 5000);
-                };
-                const stopAutoplay = () => clearInterval(autoplayInterval);
-                const resetAutoplay = () => {
-                    stopAutoplay();
-                    startAutoplay();
-                };
-
-                nextButton?.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
-                prevButton?.addEventListener('click', () => { goToSlide(currentIndex - 1); resetAutoplay(); });
-                carousel.addEventListener('mouseenter', stopAutoplay);
-                carousel.addEventListener('mouseleave', startAutoplay);
-                startAutoplay();
-            }
-
-            // --- Shared Drawer Logic ---
-            const drawerOverlay = document.getElementById('drawer-overlay');
-            const cartDrawer = document.getElementById('cart-drawer');
-
-            if(drawerOverlay) {
-                drawerOverlay.addEventListener('click', () => {
-                    if (cartDrawer.classList.contains('active')) toggleCart();
-                });
-            }
-
-            // --- Budget (Shopping Cart) Logic ---
-            const cartButton = document.getElementById('cart-button');
-            const cartCloseButton = document.getElementById('cart-close-button');
-            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartTotalPriceEl = document.getElementById('cart-total-price');
-            const cartBadge = document.getElementById('cart-badge');
-            const cartEmptyMessage = document.getElementById('cart-empty-message');
-            const checkoutButton = document.querySelector('.cart-checkout-button');
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
-            
-            const saveCart = () => {
-                localStorage.setItem('cart', JSON.stringify(cart));
-            };
-
-            const toggleCart = () => {
-                cartDrawer.classList.toggle('active');
-                drawerOverlay.classList.toggle('active');
-                document.body.style.overflow = cartDrawer.classList.contains('active') ? 'hidden' : '';
-            };
-
-            const renderCart = () => {
-                cartItemsContainer.innerHTML = '';
-                cartEmptyMessage.style.display = cart.length === 0 ? 'block' : 'none';
-                
-                if (cart.length > 0) {
-                    cart.forEach(item => {
-                        const li = document.createElement('li');
-                        li.classList.add('cart-item');
-                        li.dataset.productId = item.id;
-                        li.innerHTML = `
-                            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                            <div class="cart-item-details">
-                                <h4>${item.name}</h4>
-                                <p class="price">${formatCurrency(item.price)}</p>
-                                <div class="cart-item-quantity">
-                                    <button class="quantity-btn decrease-quantity-btn" aria-label="Diminuir quantidade">-</button>
-                                    <span>${item.quantity}</span>
-                                    <button class="quantity-btn increase-quantity-btn" aria-label="Aumentar quantidade">+</button>
-                                </div>
-                            </div>
-                            <div class="cart-item-subtotal">${formatCurrency(item.price * item.quantity)}</div>`;
-                        cartItemsContainer.appendChild(li);
-                    });
-                }
-                updateCartTotal();
-                updateCartBadge();
-                saveCart();
-            };
-            
-            const updateCartTotal = () => {
-                const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-                cartTotalPriceEl.textContent = formatCurrency(total);
-            };
-            
-            const updateCartBadge = () => {
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                cartBadge.textContent = String(totalItems);
-                cartBadge.classList.toggle('visible', totalItems > 0);
-            };
-
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const clickedButton = e.currentTarget;
-                    const { productId, productName, productPrice, productImage } = clickedButton.dataset;
-                    
-                    if (!productId || !productName || !productPrice || !productImage) return;
-
-                    // Prevent multiple clicks while animation is running
-                    if (clickedButton.disabled) return;
-
-                    const originalContent = clickedButton.innerHTML;
-                    clickedButton.disabled = true;
-                    
-                    // Visual feedback
-                    clickedButton.innerHTML = `
-                        <span style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; line-height: 1;">
-                            Adicionado
-                            <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        </span>`;
-
-                    // Add to cart logic
-                    const existingItem = cart.find(item => item.id === productId);
-                    if (existingItem) {
-                        existingItem.quantity++;
-                    } else {
-                        cart.push({ id: productId, name: productName, price: parseFloat(productPrice), image: productImage, quantity: 1 });
-                    }
-                    
-                    // Render cart and open drawer
-                    renderCart();
-                    if (!cartDrawer.classList.contains('active')) {
-                        toggleCart();
-                    }
-
-                    // Revert button state after a delay
-                    setTimeout(() => {
-                        clickedButton.innerHTML = originalContent;
-                        clickedButton.disabled = false;
-                    }, 1500);
-                });
-            });
-            
-            cartItemsContainer?.addEventListener('click', (e) => {
-                const cartItemElement = e.target.closest('.cart-item');
-                if (!cartItemElement) return;
-
-                const productId = cartItemElement.dataset.productId;
-                const itemInCart = cart.find(item => item.id === productId);
-                if (!itemInCart) return;
-
-                if (e.target.classList.contains('increase-quantity-btn')) {
-                    itemInCart.quantity++;
-                } else if (e.target.classList.contains('decrease-quantity-btn')) {
-                    itemInCart.quantity--;
-                }
-                
-                if (itemInCart.quantity <= 0) cart = cart.filter(item => item.id !== productId);
-                
-                renderCart();
-            });
-
-            cartButton?.addEventListener('click', toggleCart);
-            cartCloseButton?.addEventListener('click', toggleCart);
-            renderCart(); // Initial render
-
-            // --- Form Validation Logic ---
-            const setError = (inputElement, message) => {
-                const formGroup = inputElement.parentElement;
-                const errorDisplay = formGroup.querySelector('.form-error-message');
-                inputElement.classList.add('invalid');
-                if (errorDisplay) errorDisplay.innerText = message;
-            };
-
-            const clearError = (inputElement) => {
-                const formGroup = inputElement.parentElement;
-                const errorDisplay = formGroup.querySelector('.form-error-message');
-                inputElement.classList.remove('invalid');
-                if (errorDisplay) errorDisplay.innerText = '';
-            };
-            
-            const clearGuestErrors = () => {
-                clearError(document.getElementById('guest-name'));
-                clearError(document.getElementById('guest-email'));
-                clearError(document.getElementById('guest-phone'));
-            }
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (cartDrawer.classList.contains('active')) toggleCart();
-                }
-            });
-
-            checkoutButton?.addEventListener('click', async () => {
-                if (cart.length === 0) {
-                    alert('Seu orçamento está vazio!');
-                    return;
-                }
-                clearGuestErrors();
-
-                const whatsappNumber = "551436643083";
-                
-                const guestNameInput = document.getElementById('guest-name');
-                const guestEmailInput = document.getElementById('guest-email');
-                const guestPhoneInput = document.getElementById('guest-phone');
-                
-                const userName = guestNameInput.value.trim();
-                const userEmail = guestEmailInput.value.trim();
-                const userPhone = guestPhoneInput.value.trim();
-                
-                let isGuestValid = true;
-                if(!userName) {
-                    setError(guestNameInput, 'O nome é obrigatório.');
-                    isGuestValid = false;
-                }
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if(!userEmail || !emailRegex.test(userEmail)) {
-                    setError(guestEmailInput, 'Por favor, insira um e-mail válido.');
-                    isGuestValid = false;
-                }
-                if(!userPhone || userPhone.length < 10) {
-                    setError(guestPhoneInput, 'Telefone inválido (inclua o DDD).');
-                    isGuestValid = false;
-                }
-
-                if (!isGuestValid) return;
-                
-                const productsList = cart.map(item => `- ${item.name} (Qtd: ${item.quantity})`).join('\n');
-                const observations = document.getElementById('budget-observations-textarea').value.trim();
-                const totalValue = cartTotalPriceEl.textContent;
-
-                let message = `Olá! Gostaria de um orçamento para os seguintes itens:\n\n*Produtos:*\n${productsList}\n\n*Total estimado:* ${totalValue}\n\n`;
-
-                if(observations) {
-                    message += `*Observações:*\n${observations}\n\n`;
-                }
-
-                message += `*Meus Dados:*\n- Nome: ${userName}\n- Email: ${userEmail}\n- Telefone: ${userPhone}\n\nAguardando o contato. Obrigado!`;
-                
-                const encodedMessage = encodeURIComponent(message);
-                window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
-                
-                // Limpa o orçamento após o envio
-                cart = [];
-                renderCart();
-                toggleCart();
-            });
-
-            // --- Lógica da Animação de Rolagem ---
-            const animatedElements = document.querySelectorAll('.scroll-animate');
-            if (animatedElements.length > 0) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    rootMargin: '0px 0px -50px 0px' // Aciona um pouco antes de estar totalmente visível
-                });
-
-                animatedElements.forEach(el => {
-                    observer.observe(el);
-                });
-            }
-
-            // --- Lógica do Chat Widget IA ---
-            const chatFab = document.getElementById('chat-fab');
-            const chatWidget = document.getElementById('chat-widget-container');
-            const chatCloseBtn = document.getElementById('chat-close-btn');
-            const chatLog = document.getElementById('chat-log');
-            const chatInput = document.getElementById('chat-input');
-            const chatSendBtn = document.getElementById('chat-send-btn');
-            let geminiChat = null;
-
-            const toggleChatWidget = () => {
-                chatWidget.classList.toggle('active');
-            };
-
-            const formatAIResponse = (text) => {
-                const escapedText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                const boldedText = escapedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                const withLineBreaks = boldedText.replace(/\n/g, '<br>');
-                return withLineBreaks;
-            }
-
-            const addMessageToLog = (sender, message, isTyping = false) => {
-                const messageEl = document.createElement('div');
-                messageEl.classList.add('chat-message', sender);
-                
-                if (isTyping) {
-                    messageEl.classList.add('typing-indicator');
-                    messageEl.innerHTML = `<div class="dot"></div><div class="dot"></div><div class="dot"></div>`;
-                } else {
-                    messageEl.innerHTML = formatAIResponse(message);
-                }
-                
-                chatLog.appendChild(messageEl);
-                chatLog.scrollTop = chatLog.scrollHeight;
-                return messageEl;
-            };
-
-            const initializeChat = () => {
-                try {
-                    const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
-
-                    const products = [];
-                    document.querySelectorAll('.product-card').forEach(card => {
-                        const name = card.querySelector('h3')?.innerText;
-                        const description = card.querySelector('p')?.innerText;
-                        const price = card.querySelector('.price')?.innerText;
-                        if (name && description && price) {
-                            products.push({ name, description, price });
-                        }
-                    });
-                    const productListString = products.map(p => `- ${p.name}: ${p.description} (${p.price})`).join('\n');
-                    
-                    const systemInstruction = `
-                        Você é um consultor especialista da 'Teknoluvas', uma empresa de soluções digitais. Seu objetivo é analisar a necessidade de um cliente e recomendar os produtos mais adequados do nosso portfólio. Seja amigável, profissional e conversacional. Mantenha as respostas concisas.
-
-                        Use esta lista como sua base de conhecimento de produtos:
-                        ${productListString}
-
-                        Responda às perguntas do cliente com base nesses produtos. Se a pergunta não for sobre os produtos, gentilmente redirecione a conversa para as soluções que a Teknoluvas oferece. Use negrito (**) para destacar os nomes dos produtos.
-                    `;
-
-                    geminiChat = ai.chats.create({
-                        model: 'gemini-2.5-flash',
-                        config: { systemInstruction },
-                    });
-                    
-                    addMessageToLog('ai', "Olá! Sou o assistente da Teknoluvas. Como posso ajudar a encontrar a solução ideal para o seu negócio?");
-
-                } catch (error) {
-                    console.error("Erro ao inicializar o chat:", error);
-                     addMessageToLog('ai', "Desculpe, estou com problemas para me conectar. Tente novamente mais tarde.");
-                }
-            };
-            
-            const handleSendMessage = async () => {
-                const userInput = chatInput.value.trim();
-                if (!userInput || !geminiChat) return;
-
-                addMessageToLog('user', userInput);
-                chatInput.value = '';
-                chatSendBtn.disabled = true;
-
-                const typingIndicator = addMessageToLog('ai', '', true);
-
-                try {
-                    const response = await geminiChat.sendMessage({ message: userInput });
-                    typingIndicator.remove();
-                    addMessageToLog('ai', response.text);
-                } catch (error) {
-                    console.error("Erro na API Gemini:", error);
-                    typingIndicator.remove();
-                    addMessageToLog('ai', "Desculpe, ocorreu um erro. Pode tentar reformular sua pergunta?");
-                } finally {
-                    chatSendBtn.disabled = false;
-                    chatInput.focus();
-                }
-            };
-
-            chatFab?.addEventListener('click', toggleChatWidget);
-            chatCloseBtn?.addEventListener('click', toggleChatWidget);
-            chatSendBtn?.addEventListener('click', handleSendMessage);
-            chatInput?.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    handleSendMessage();
-                }
-            });
-            
-            // Inicia o chat quando a página é carregada
-            initializeChat();
-        });
-    </script>
 </body>
 </html>

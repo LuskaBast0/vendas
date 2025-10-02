@@ -1,5 +1,5 @@
-        document.addEventListener('DOMContentLoaded', () => {
-
+    document.addEventListener('DOMContentLoaded', () => {
+            
             // --- Mobile Menu Logic ---
             const menuButton = document.getElementById('menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -80,16 +80,14 @@
             // --- Shared Drawer Logic ---
             const drawerOverlay = document.getElementById('drawer-overlay');
             const cartDrawer = document.getElementById('cart-drawer');
-            const profileDrawer = document.getElementById('profile-drawer');
 
             if(drawerOverlay) {
                 drawerOverlay.addEventListener('click', () => {
                     if (cartDrawer.classList.contains('active')) toggleCart();
-                    if (profileDrawer.classList.contains('active')) toggleProfile();
                 });
             }
 
-            // --- Shopping Cart Logic ---
+            // --- Budget (Shopping Cart) Logic ---
             const cartButton = document.getElementById('cart-button');
             const cartCloseButton = document.getElementById('cart-close-button');
             const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
@@ -97,9 +95,14 @@
             const cartTotalPriceEl = document.getElementById('cart-total-price');
             const cartBadge = document.getElementById('cart-badge');
             const cartEmptyMessage = document.getElementById('cart-empty-message');
-            let cart = [];
+            const checkoutButton = document.querySelector('.cart-checkout-button');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            
+            const saveCart = () => {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            };
 
             const toggleCart = () => {
                 cartDrawer.classList.toggle('active');
@@ -133,6 +136,7 @@
                 }
                 updateCartTotal();
                 updateCartBadge();
+                saveCart();
             };
             
             const updateCartTotal = () => {
@@ -148,17 +152,43 @@
 
             addToCartButtons.forEach(button => {
                 button.addEventListener('click', (e) => {
-                    const { productId, productName, productPrice, productImage } = e.currentTarget.dataset;
+                    const clickedButton = e.currentTarget;
+                    const { productId, productName, productPrice, productImage } = clickedButton.dataset;
+                    
                     if (!productId || !productName || !productPrice || !productImage) return;
 
+                    // Prevent multiple clicks while animation is running
+                    if (clickedButton.disabled) return;
+
+                    const originalContent = clickedButton.innerHTML;
+                    clickedButton.disabled = true;
+                    
+                    // Visual feedback
+                    clickedButton.innerHTML = `
+                        <span style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; line-height: 1;">
+                            Adicionado
+                            <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </span>`;
+
+                    // Add to cart logic
                     const existingItem = cart.find(item => item.id === productId);
                     if (existingItem) {
                         existingItem.quantity++;
                     } else {
                         cart.push({ id: productId, name: productName, price: parseFloat(productPrice), image: productImage, quantity: 1 });
                     }
+                    
+                    // Render cart and open drawer
                     renderCart();
-                    if (!cartDrawer.classList.contains('active')) toggleCart();
+                    if (!cartDrawer.classList.contains('active')) {
+                        toggleCart();
+                    }
+
+                    // Revert button state after a delay
+                    setTimeout(() => {
+                        clickedButton.innerHTML = originalContent;
+                        clickedButton.disabled = false;
+                    }, 1500);
                 });
             });
             
@@ -185,153 +215,104 @@
             cartCloseButton?.addEventListener('click', toggleCart);
             renderCart(); // Initial render
 
-            // --- Profile Drawer Logic ---
-            const profileCloseButton = document.getElementById('profile-close-button');
-            const orderHistoryList = document.getElementById('order-history-list');
-            const orderEmptyMessage = document.getElementById('order-empty-message');
-            const profileForm = document.getElementById('profile-form');
-            const profileNameInput = document.getElementById('profile-name');
-            const profileEmailInput = document.getElementById('profile-email');
-
-            const mockOrders = [
-                { id: 'TEK-84372', date: '2024-07-22', total: 4999, status: 'Entregue' },
-                { id: 'TEK-82199', date: '2024-06-15', total: 12000, status: 'Entregue' },
-                { id: 'TEK-79543', date: '2024-04-02', total: 3500, status: 'Enviado' },
-            ];
-            
-            const toggleProfile = () => {
-                profileDrawer.classList.toggle('active');
-                drawerOverlay.classList.toggle('active');
-                document.body.style.overflow = profileDrawer.classList.contains('active') ? 'hidden' : '';
+            // --- Form Validation Logic ---
+            const setError = (inputElement, message) => {
+                const formGroup = inputElement.parentElement;
+                const errorDisplay = formGroup.querySelector('.form-error-message');
+                inputElement.classList.add('invalid');
+                if (errorDisplay) errorDisplay.innerText = message;
             };
 
-            const renderOrderHistory = () => {
-                orderHistoryList.innerHTML = '';
-                orderEmptyMessage.style.display = mockOrders.length === 0 ? 'block' : 'none';
-
-                if(mockOrders.length > 0) {
-                    mockOrders.forEach(order => {
-                         const li = document.createElement('li');
-                         li.classList.add('order-item');
-                         const statusClass = `status-${order.status.toLowerCase()}`;
-                         li.innerHTML = `
-                            <div class="order-item-header">
-                                <span class="order-id">#${order.id}</span>
-                                <span class="order-status ${statusClass}">${order.status}</span>
-                            </div>
-                            <div class="order-item-body">
-                                <p><strong>Data:</strong> ${new Date(order.date).toLocaleDateString('pt-BR')}</p>
-                                <p><strong>Total:</strong> ${formatCurrency(order.total)}</p>
-                            </div>
-                         `;
-                         orderHistoryList.appendChild(li);
-                    });
-                }
+            const clearError = (inputElement) => {
+                const formGroup = inputElement.parentElement;
+                const errorDisplay = formGroup.querySelector('.form-error-message');
+                inputElement.classList.remove('invalid');
+                if (errorDisplay) errorDisplay.innerText = '';
             };
             
-            profileCloseButton?.addEventListener('click', toggleProfile);
-            renderOrderHistory(); // Initial render of mock data
+            const clearGuestErrors = () => {
+                clearError(document.getElementById('guest-name'));
+                clearError(document.getElementById('guest-email'));
+                clearError(document.getElementById('guest-phone'));
+            }
             
-            // --- Auth Modal & State Logic ---
-            const authButton = document.getElementById('auth-button');
-            const authModal = document.getElementById('auth-modal');
-            const authOverlay = document.getElementById('auth-modal-overlay');
-            const authCloseButton = document.getElementById('auth-modal-close');
-            const authTabs = document.querySelectorAll('.auth-tab');
-            const authForms = document.querySelectorAll('.auth-form');
-            const loginForm = document.getElementById('login-form');
-            const registerForm = document.getElementById('register-form');
-            const guestView = document.getElementById('guest-view');
-            const userView = document.getElementById('user-view');
-            const userNameEl = document.getElementById('user-name');
-            const logoutButton = document.getElementById('logout-button');
-
-            const openAuthModal = () => {
-                authModal.classList.add('active');
-                authOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            };
-
-            const closeAuthModal = () => {
-                authModal.classList.remove('active');
-                authOverlay.classList.remove('active');
-                if (!cartDrawer.classList.contains('active') && !profileDrawer.classList.contains('active')) {
-                    document.body.style.overflow = '';
-                }
-            };
-            
-            const loginUser = (name, email) => {
-                guestView.style.display = 'none';
-                userView.style.display = 'flex';
-                userNameEl.textContent = `Olá, ${name}`;
-                profileNameInput.value = name;
-                profileEmailInput.value = email;
-                closeAuthModal();
-            };
-            
-            const logoutUser = () => {
-                guestView.style.display = 'block';
-                userView.style.display = 'none';
-                userNameEl.textContent = '';
-            };
-
-            authButton?.addEventListener('click', openAuthModal);
-            authCloseButton?.addEventListener('click', closeAuthModal);
-            authOverlay?.addEventListener('click', closeAuthModal);
-            logoutButton?.addEventListener('click', logoutUser);
-            userView?.addEventListener('click', (e) => {
-                // Open profile only if name is clicked, not logout button
-                if(e.target.id === 'user-name') {
-                    toggleProfile();
-                }
-            });
-
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    if (authModal.classList.contains('active')) closeAuthModal();
                     if (cartDrawer.classList.contains('active')) toggleCart();
-                    if (profileDrawer.classList.contains('active')) toggleProfile();
                 }
             });
 
-            authTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = document.querySelector(tab.dataset.tabTarget);
-                    authTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    authForms.forEach(form => form.classList.remove('active'));
-                    if (target) target.classList.add('active');
+            checkoutButton?.addEventListener('click', async () => {
+                if (cart.length === 0) {
+                    alert('Seu orçamento está vazio!');
+                    return;
+                }
+                clearGuestErrors();
+
+                const whatsappNumber = "5514997201523";
+                
+                const guestNameInput = document.getElementById('guest-name');
+                const guestEmailInput = document.getElementById('guest-email');
+                const guestPhoneInput = document.getElementById('guest-phone');
+                
+                const userName = guestNameInput.value.trim();
+                const userEmail = guestEmailInput.value.trim();
+                const userPhone = guestPhoneInput.value.trim();
+                
+                let isGuestValid = true;
+                if(!userName) {
+                    setError(guestNameInput, 'O nome é obrigatório.');
+                    isGuestValid = false;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if(!userEmail || !emailRegex.test(userEmail)) {
+                    setError(guestEmailInput, 'Por favor, insira um e-mail válido.');
+                    isGuestValid = false;
+                }
+                if(!userPhone || userPhone.length < 10) {
+                    setError(guestPhoneInput, 'Telefone inválido (inclua o DDD).');
+                    isGuestValid = false;
+                }
+
+                if (!isGuestValid) return;
+                
+                const productsList = cart.map(item => `- ${item.name} (Qtd: ${item.quantity})`).join('\n');
+                const observations = document.getElementById('budget-observations-textarea').value.trim();
+                const totalValue = cartTotalPriceEl.textContent;
+
+                let message = `Olá! Gostaria de um orçamento para os seguintes itens:\n\n*Produtos:*\n${productsList}\n\n*Total estimado:* ${totalValue}\n\n`;
+
+                if(observations) {
+                    message += `*Observações:*\n${observations}\n\n`;
+                }
+
+                message += `*Meus Dados:*\n- Nome: ${userName}\n- Email: ${userEmail}\n- Telefone: ${userPhone}\n\nAguardando o contato. Obrigado!`;
+                
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+                
+                // Limpa o orçamento após o envio
+                cart = [];
+                renderCart();
+                toggleCart();
+            });
+
+            // --- Lógica da Animação de Rolagem ---
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+            if (animatedElements.length > 0) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    rootMargin: '0px 0px -50px 0px' // Aciona um pouco antes de estar totalmente visível
                 });
-            });
-            
-            loginForm?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const emailInput = document.getElementById('login-email');
-                if (emailInput.value) {
-                     const name = emailInput.value.split('@')[0];
-                     loginUser(name, emailInput.value);
-                }
-            });
-            
-            registerForm?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const nameInput = document.getElementById('register-name');
-                const emailInput = document.getElementById('register-email');
-                if (nameInput.value && emailInput.value) {
-                    loginUser(nameInput.value, emailInput.value);
-                }
-            });
 
-            profileForm?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const newName = profileNameInput.value;
-                userNameEl.textContent = `Olá, ${newName}`;
-                const submitButton = profileForm.querySelector('button[type="submit"]');
-                const originalText = submitButton.textContent;
-                submitButton.textContent = 'Salvo!';
-                setTimeout(() => {
-                    submitButton.textContent = originalText;
-                    toggleProfile();
-                }, 1500);
-            });
+                animatedElements.forEach(el => {
+                    observer.observe(el);
+                });
+            }
         });

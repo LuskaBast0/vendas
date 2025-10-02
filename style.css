@@ -7,7 +7,8 @@
             --color-text-secondary: #4b5563; /* cinza médio */
             --color-background-light: #f3f4f6; /* cinza claro */
             --color-white: #ffffff;
-            --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --color-error: #dc2626; /* vermelho escuro para erros */
+            --font-family-sans: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
 
         *, *::before, *::after {
@@ -89,12 +90,18 @@
             font-size: 0.875rem;
         }
         
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
         .btn-primary {
             background-color: var(--color-primary);
             color: var(--color-white);
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             background-color: var(--color-primary-dark);
             transform: scale(1.05);
         }
@@ -105,11 +112,34 @@
             border: 2px solid var(--color-primary);
         }
         
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background-color: var(--color-primary);
             color: var(--color-white);
         }
         
+        .btn-basto {
+            background-color:gray;
+            color: var(--color-white);
+        }
+
+        .btn-basto:hover:not(:disabled) {
+            background-color: gray;
+            transform: scale(1.05);
+        }
+
+        /* Animação de Rolagem */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .sr-only {
             position: absolute;
             width: 1px;
@@ -192,21 +222,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
-        
-        #user-view {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        #user-name {
-            font-weight: 600;
-            color: var(--color-text-secondary);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        #user-name:hover {
-             color: var(--color-primary);
         }
 
         .cart-toggle, .menu-toggle {
@@ -294,7 +309,7 @@
         /* Estilos do Hero */
         .hero-section {
             background-color: var(--color-white);
-            min-height: 100vh;
+            min-height: calc(100vh - 80px); /* Adjust based on header height */
             display: flex;
             align-items: center;
         }
@@ -334,6 +349,59 @@
 
         .hero-image img:hover {
              transform: scale(1.05);
+        }
+
+        /* Keyframes for the scroll animation */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Logo Carousel Section */
+        .logo-carousel-section {
+            background-color: var(--color-white);
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        .logo-carousel {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent 100%);
+        }
+
+        .logo-carousel-track {
+            display: flex;
+            width: calc(200px * 14); /* (logo-slide width) * (number of logos * 2) */
+            animation: scroll 35s linear infinite;
+        }
+
+        .logo-carousel:hover .logo-carousel-track {
+            animation-play-state: paused;
+        }
+
+        .logo-slide {
+            flex-shrink: 0;
+            width: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo-slide img {
+            max-width: 120px;
+            height: auto;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .logo-slide:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
         }
 
         /* Estilos das Seções de Features (Sobre, FeatureOne, FeatureTwo) */
@@ -420,8 +488,8 @@
         }
         
         .product-card img {
-            width: 100%;
-            height: 12rem;
+            width: auto;
+            height: auto;
             object-fit: cover;
         }
         
@@ -564,7 +632,7 @@
             background-color: var(--color-white);
         }
         
-        /* Estilos do Drawer (Carrinho e Perfil) */
+        /* Estilos do Drawer (Orçamento) */
         .drawer-overlay {
             position: fixed;
             top: 0;
@@ -635,7 +703,7 @@
             padding: 1.5rem;
         }
 
-        /* Estilos do Carrinho */
+        /* Estilos do Orçamento */
         .cart-empty-message {
             text-align: center;
             color: var(--color-text-secondary);
@@ -707,196 +775,26 @@
             padding: 1.5rem;
             border-top: 1px solid #e5e7eb;
         }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.125rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-        }
         
-        .cart-checkout-button {
+        .budget-observations textarea {
             width: 100%;
-            padding: 1rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
             font-size: 1rem;
-        }
-        
-        /* Estilos do Perfil */
-        .profile-section {
-            margin-bottom: 2.5rem;
-        }
-        .profile-section h4 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 0.75rem;
-        }
-        
-        #profile-form .btn {
-            width: 100%;
-            padding: 0.875rem;
-        }
-        
-        .order-history-list {
-            list-style: none;
-            display: grid;
-            gap: 1.5rem;
-        }
-        
-        .order-item {
-            background-color: #f9fafb;
-            padding: 1.25rem;
-            border-radius: 0.5rem;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .order-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .order-item-header .order-id {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .order-item-body p {
-            font-size: 0.9rem;
-            color: var(--color-text-secondary);
-            margin: 0.25rem 0;
-        }
-        
-        .order-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        
-        .status-entregue { background-color: #dcfce7; color: #166534; }
-        .status-enviado { background-color: #dbeafe; color: #1e40af; }
-        .status-pendente { background-color: #e5e7eb; color: #374151; }
-
-        .profile-empty-message {
-            text-align: center;
-            color: var(--color-text-secondary);
-            padding-top: 2rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            margin-top: 1rem;
         }
 
-        /* Estilos do Modal de Autenticação */
-        .auth-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s;
-        }
-
-        .auth-modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .auth-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.95);
-            background-color: var(--color-white);
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 420px;
-            z-index: 1001;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-        
-        .auth-modal.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .auth-modal-header {
-            position: relative;
-            padding: 1.5rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .auth-modal-close {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 50%;
-            transition: background-color 0.2s;
-        }
-
-        .auth-modal-close:hover {
-             background-color: #f3f4f6;
-        }
-
-        .auth-modal-close .icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: var(--color-text-secondary);
-        }
-
-        .auth-modal-tabs {
-            display: flex;
-        }
-        
-        .auth-tab {
-            flex: 1;
-            padding: 1rem;
-            font-weight: 600;
-            text-align: center;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            cursor: pointer;
-            transition: color 0.2s, border-color 0.2s;
-            color: var(--color-text-secondary);
-        }
-
-        .auth-tab:hover {
-            color: var(--color-text-primary);
-        }
-
-        .auth-tab.active {
-            color: var(--color-primary);
-            border-bottom-color: var(--color-primary);
-        }
-
-        .auth-modal-body {
-            padding: 2rem 1.5rem;
-        }
-        
-        .auth-form {
-            display: none;
-        }
-        
-        .auth-form.active {
-            display: block;
+        #guest-info-form .form-group {
+            margin-bottom: 0.75rem;
         }
         
         .form-group {
             margin-bottom: 1.25rem;
+            position: relative;
         }
 
         .form-group label {
@@ -921,11 +819,32 @@
             box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
         }
 
-        .auth-form .btn, #profile-form .btn {
+        .form-group input.invalid {
+            border-color: var(--color-error);
+            box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+        }
+
+        .form-error-message {
+            color: var(--color-error);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+            min-height: 1.2em; /* Reserve space to prevent layout shift */
+        }
+
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-checkout-button {
             width: 100%;
-            padding: 0.875rem;
+            padding: 1rem;
             font-size: 1rem;
-            margin-top: 0.5rem;
         }
 
         /* Estilos do Footer */
@@ -1064,7 +983,6 @@
             margin: 0;
         }
 
-
         /* Media Queries para Responsividade */
         @media (min-width: 768px) {
             /* Header */
@@ -1121,7 +1039,7 @@
                 gap: 4rem;
             }
         }
-        
+
         @media (min-width: 1024px) {
             /* Produtos */
             .products-grid {
